@@ -1,38 +1,25 @@
 <?php
-	session_start();
-	if(isset($_POST["logoff"]) && $_POST["logoff"]==1)
-	{
+	include '/var/www/lib/login_functions.php';
 	$uid = $_SERVER['PHP_AUTH_USER'];
 	$dbname = "freenestcore";
-	$uname="MYSQL_UNAME";
-	$pw="MYSQL_ADMINUSER_PASSWD";
-	
-	session_destroy();
+	$uname="freenest-core";
+	$pw="adminuser";
 	logOff($uid, $dbname,$uname,$pw);
 	
-	echo true;
-	}
-
-	function logOff($uid, $dbname, $uname, $pw){
-		try{
-			connect($uname, $pw, $dbname);
-			//echo "connect successful";
-		}catch(Exception $exception){
-			echo 'errors';
-			die();
-		}
-		$username = mysql_query("SELECT id FROM users WHERE name='$uid'");
-                $usname = mysql_result($username,0);
-                $query = mysql_query("UPDATE users SET status_id=3 WHERE id=$usname"); 
-
-        	
-
-	}//END OF logOff()
+	sec_session_start();
+	// Unset all session values
+	$_SESSION = array();
+	// get session parameters 
+	$params = session_get_cookie_params();
+	// Delete the actual cookie.
+	setcookie(session_name(), '', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
+	// Destroy session
+	session_destroy();
 	
-	function connect($uname, $pw, $dbname){
-	mysql_connect("localhost", $uname, $pw) or die("error in connecting to DB: ".mysql_error());
-	mysql_select_db($dbname) or die("Error in selecting DB: ".mysql_error());
-	}//END OF connect()
-	
-
+	$url="http://".$_SERVER["SERVER_NAME"]."?status=loggedoff";
+	//header("Location:".$url);
+	echo "<script type='text/javascript'>window.location='".$url."'; 
+ 	if (self.parent.frames.length != 0){
+        self.parent.location=document.location.href;
+    	}</script>";
 ?>

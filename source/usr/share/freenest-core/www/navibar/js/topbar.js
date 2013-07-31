@@ -10,7 +10,8 @@
             async: false
 
         }).responseText;
-	if(user== false)
+	
+	if(user != true)
 	{
 		window.location='http://' + document.domain;
 	}
@@ -230,14 +231,9 @@ var topbar = function () {
     }
     
     function logoutBtnClick() {
-       $.ajax({
-		    url: topbarLocation+"php/logoff.php", 
-		    data: {logoff:1},
-		    type: 'post',
-		    success: function(data){
-			if(data == true){window.location='http://' + document.domain+"?status=loggedoff";}
-			}
-		});
+
+   	window.location=topbarLocation+"php/logoff.php";
+
     }
     
     //The logo should be a link w/ an image, but..

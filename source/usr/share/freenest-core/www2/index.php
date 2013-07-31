@@ -65,7 +65,7 @@
 	switch(strip_tags($_GET['status'])){
     
         case "badcredentials":
-                echo "<div class='info error'>Error, wrong Username/Password!</br> Username is case sensitive!</div>";
+                echo "<div class='info error'>Error, wrong Username/Password! Username is case sensitive!</div>";
         break;
 
         case "loggedoff":
@@ -73,11 +73,12 @@
         break;
 
         default:
-                echo "<div class='info error'>Unknown parameter</div>";
+                echo "<div class='info error'>".strip_tags($_GET["status"])."</div>";
         break;
 		}//switch
 	
-	}else{
+	}
+	else{
 		 echo "<div class='info'><b>Please Note!</b> The login process will be redirected to a secure connection. You may encounter a message from your browser about an untrusted certificate.</p><p> <span style='text-decoration:underline;'>This is normal</span>. Please accept the certificate and add it to permanent exceptions according to the instructions given by your browser. This is caused because the certificate used to secure the connection is only signed by the server. If you want to read more about this error message, <a href='http://support.mozilla.com/en-US/kb/This+connection+is+untrusted' target='_blank'>click here</a>.</div>";
 }
 ?>
@@ -96,7 +97,6 @@
 	  	// freenest login redirect
 
 		$("#login").attr("action","https://"+document.domain+"/auth.php");
-		
 		// initialize chroma-hash
     	$("input:password").chromaHash({bars: 3});
 
@@ -109,3 +109,4 @@
 </body>
 
 </html>
+
