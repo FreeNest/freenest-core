@@ -238,6 +238,8 @@ function replyMsg(shout) {
 			"</div>"+
 		"</div>");
 		$j('#shoutContent').fadeIn('fast');
+		
+	setTeamboardStateToFalse();
 };//End of replyMsg()
 
 /*reply button pressed, shout will be marked as read and we
@@ -330,6 +332,8 @@ function composeMsg(recipient, ind){
 			onClose: hideContainer
 		});//End of SimpleModal-dialog
 	}
+
+	setTeamboardStateToFalse();
 }//End of composeMsg()
 
 //Animation for opening the SimpleModal-dialog
@@ -361,6 +365,8 @@ function sendMsg(){
 		async: true,
 		success: function(msg){exitModal(msg, recipient);}
 	});
+
+	setTeamboardStateToTrue();
 }//End of sendMsg()
 
 /*Shout is sent, showing the "Shout sent to" dialog*/
@@ -379,6 +385,8 @@ function exitModal(msg, recipient){
 		"</div>");
 		$j('#shoutContent').show();
 	});
+
+	setTeamboardStateToTrue();
 }//End of exitModal()
 
 /*"Kills" the SimpleModal and starts looking for new shouts*/
@@ -386,4 +394,18 @@ function closeModal(){
 	$j.modal.close();
     setTimeout("receivedMsg()",1000);
     this.isreceive=0;
+
+	setTeamboardStateToTrue();
 };//End of closeModal
+
+// Check if Teamboard is open and allow it to get
+function setTeamboardStateToTrue() {
+	if ($(".kineticjs-content").length != 0)
+		Teamboard.boardManager.boardState = true;
+}
+
+// Check if Teamboard is open and prevent it getting keypresses
+function setTeamboardStateToFalse() {
+	if ($(".kineticjs-content").length != 0)
+		Teamboard.boardManager.boardState = false;
+}

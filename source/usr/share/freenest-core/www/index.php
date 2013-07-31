@@ -1,4 +1,13 @@
 <?php
+include '/var/www/lib/login_functions.php';
+sec_session_start();
+if( login_check() !== true)
+{
+	$url="http://".$_SERVER["SERVER_NAME"];
+	header("Location:".$url);
+	exit();
+}
+
  header('Location: ProjectMAINPAGE/');
  ?>
 <html>

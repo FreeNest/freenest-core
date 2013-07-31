@@ -6,13 +6,12 @@ $dbname = "freenestcore";
 $uname="MYSQL_UNAME";
 $pw="MYSQL_ADMINUSER_PASSWD";
 
-require_once("lib/freenest_ldap.php");	
-session_start();
-
-$result=logIn($uid,$pass);
-if($result == true)
+require_once("lib/login_functions.php");	
+sec_session_start();
+if(login($uid,$pass) === true)
 {
-	$_SESSION["user"]=1;
+      // Login success
+     
 	try
 	{
 			connect($uname, $pw, $dbname);
@@ -35,24 +34,11 @@ if($result == true)
 
 	}
 	echo true;
-}
-
-
-	function logIn($uid,$pass)
-	{	
-	$ldap = FreeNEST_LDAP::getInstance();
-	$ldap->connect();
-	$isCorrect = $ldap->is_password_correct($uid, $pass);
-	
-	$ldap->disconnect();
-	
-	return $isCorrect;
-		
-	}
-function connect($uname, $pw, $dbname)
+} 
+else
 {
-	mysql_connect("localhost", $uname, $pw) or die("error in connecting to DB: ".mysql_error());
-	mysql_select_db($dbname) or die("Error in selecting DB: ".mysql_error());
-}//END OF connect()
+      // Login failed
+      echo false;
+}
 ?>
 

@@ -5,17 +5,15 @@
 *
 * Mostly adapted from php.net examples
 */
-session_start();
+include '/var/www/lib/login_functions.php';
+sec_session_start();
 if(isset($_POST["logged_in"]))
 {
-	if(isset($_SESSION["user"]) && $_SESSION["user"] == 1)
-	{
-		
-		echo true;
-	}
-	else echo false;
+	
+	echo login_check();
+
 }
-else if(isset($_SESSION["user"]))
+else if(isset($_SESSION["login_string"]))
 {	
 	$HOST = $_POST['host'];
 	$USER_DN = "cn=adminuser,dc=project,dc=nest";

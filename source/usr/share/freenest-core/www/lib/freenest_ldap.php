@@ -120,29 +120,51 @@ class FreeNEST_LDAP
     public function is_password_correct($uid, $password)
     {
         $user = $this->get_user_attributes($uid);
+        $disablesUsers=$this->get_disabled_users();
+	//check for user erros
         if ($user == null)
         {
-            echo 'User not found. ';
-            return false;
-        }
-	if(strcmp($user["cn"][0],$uid) != 0)
-	{
-			echo 'Username did not match, username is case sensitive!';
-			return false;
-	}
-        $old = $user['userPassword'][0];
-        $type = $this->get_crypt_type($old);
-        if ($type == '')
-        {
-            $cpass = $password;
-        }
-        else
-        {
-                $salt = $this->get_salt($old);
-            $cpass = $this->crypt_password($password, $salt);
-        }
+            $error= 'User not found!';
+            return $error;
 
-        return ldap_compare($this->ldapconn, $this->user_dn($uid), 'userPassword', $cpass);
+        }
+	else if(in_array(array($user['cn'][0], $user['displayName'][0], $user['mail'][0]),$disablesUsers))
+	{
+		$error= 'User is disabled!';
+            	return $error;
+
+	}
+	else if(strcmp($user["cn"][0],$uid) !== 0)
+	{
+		$error= 'Username did not match, username is case sensitive!';
+		return $error;
+
+	}
+	else{
+//check passwords
+		$old = $user['userPassword'][0];
+		$type = $this->get_crypt_type($old);
+		if ($type == '')
+		{
+		    $cpass = $password;
+		}
+		else
+		{
+		        $salt = $this->get_salt($old);
+		    $cpass = $this->crypt_password($password, $salt);
+		}
+	
+		if(ldap_compare($this->ldapconn, $this->user_dn($uid), 'userPassword', $cpass) == true)
+		{
+	
+			return true;
+		}
+		else
+		{	
+			$error="Wrong password!";
+			 return $error; 
+		}
+	}
     }
 
     public function is_admin($uid)
@@ -170,7 +192,7 @@ class FreeNEST_LDAP
     public function add_user_from_json($json)
     {
         $data["cn"] = "NestUser";
-        $data["gidnumber"] = rand(1000, 65535);     
+        $data["gidnumber"] = rand(1000, 65535);
         $data["homedirectory"] = "/home/testiuser/";
         $data["homephone"] = "+3580000000";
         $data["initials"] = "T U";
@@ -181,7 +203,7 @@ class FreeNEST_LDAP
         $data["objectclass"][0] = "inetOrgPerson";
         $data["objectclass"][1] = "posixAccount";
         $data["objectclass"][2] = "shadowAccount";
-        $data["postalcode"] = 31000; 
+        $data["postalcode"] = 31000;
         $data["shadowexpire"] = -1;
         $data["shadowflag"] = 0;
         $data["shadowlastchange"] = 10877;
@@ -194,10 +216,10 @@ class FreeNEST_LDAP
         $data["givenname"] = "Nest"; 
         $data["sn"] = "User"; // surname
         $data["uid"] = $data["cn"];
-        $data["mail"] = "user@nest.com"; 
+        $data["mail"] = "user@nest.com";
         $data["uidnumber"] = rand(1000, 65535);
 
-        // merge defautls with input
+        // merge defaults with input
         $json = array_change_key_case($json, CASE_LOWER);
         $data = array_merge($data, $json);
 
@@ -205,10 +227,10 @@ class FreeNEST_LDAP
         if (!array_key_exists("displayname", $data)) {
             $data["displayname"] = $data["givenname"] . $data["sn"];
         }
-        
+
         // set default password
         if (!array_key_exists("userpassword", $data)) {
-            $data["userpassword"] = "password";
+            $data["userpassword"] = $data["givenname"] . $data["sn"];
         }
 
         // hash password
@@ -403,3 +425,4 @@ class FreeNEST_LDAP
 
 
 ?>
+
