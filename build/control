@@ -7,7 +7,7 @@ Build-Depends: debhelper (>= 8.0.0)
 Standards-Version: 3.9.3
 Homepage: http://www.freenest.org
 
-Package: freenest-core
+Package: freenest-core-general
 Architecture: all
 Depends: dbconfig-common, debconf (>= 0.5), mysql-client, python-support, libapache2-mod-php5, php5-cgi, php5, python, apache2, perl, libpam-ldap, nss-updatedb, libnss-db, mysql-server, openssl, libapache2-svn, libapache2-mod-perl2, libapache2-mod-proxy-html, libapache2-mod-wsgi, rpl, slapd, ldap-utils, python-mysqldb, php5-mysql, libjs-jquery, zsh, libjs-jquery-metadata, libjs-jquery-cookie, php5-ldap, ${shlibs:Depends}, ${misc:Depends}
 Description: Core package for FreeNest
