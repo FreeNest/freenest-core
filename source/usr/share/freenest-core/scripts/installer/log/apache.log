@@ -1,0 +1,5 @@
+Replacing "Domain_PLACEHOLDER" with "localdomain" (case sensitive) (partial words matched)
+Replacing "HostName_PLACEHOLDER" with "freenestdemoserver" (case sensitive) (partial words matched)
+[Wed Jan 18 05:21:18 2012] [warn] NameVirtualHost *:80 has no VirtualHosts
+httpd not running, trying to start
+httpd not running, trying to start

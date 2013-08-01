@@ -1,0 +1,214 @@
+/* ============================== */
+/* ! Layout for desktop version   */
+/* ============================== */
+
+html, body {
+	background: #ebebeb;
+	height: 100%;
+	font-family: "Helvetica", "Arial", sans-serif;
+	font-size: 0.8em;
+	line-height: 1.5em;
+}
+
+h1 {
+	color: #5f8029;
+	font-size: 30px;
+	line-height: 36px;
+	margin-bottom: 20px;
+}
+
+a {
+	color: #3b5975;
+}
+
+#top {
+	background: #fafafc;
+}
+
+#topleft, #topright {
+	position: relative;
+	height: 400px;
+}
+
+	#logo, #login {
+		position: absolute;
+		bottom: 0px;
+	}
+
+	#logo {
+		z-index: 0;
+	}
+
+		#reflection {
+			z-index: 0;
+		}
+
+	#login {
+		margin: 50px auto;
+		max-width: 376px;
+	}
+
+		#login .inputfield {
+			height: 20px;
+			border-radius: 3px;
+			border: 1px #ccc solid;
+			box-shadow: #eee 1px 1px 5px;
+			padding: 4px;
+			margin: 5px;
+		}
+
+		#login label {
+			display: block;
+			position: relative;
+			margin-left: 5px;
+		}
+
+		.inputwrapper {
+			float: left;
+		}
+
+
+	.info {
+		max-width: 400px;
+		padding: 20px;
+		margin: 20px auto 0px auto;
+		border-radius: 3px;
+	}
+
+	.warning {
+		background: #fafafc;
+		border: 4px solid #ffc30f;
+	}
+
+	.error {
+		background: #fafafc;
+		border: 4px solid #ad2a20;
+	}
+
+.chroma-hash {
+	border-radius: 10px;
+}
+
+.nestbutton {
+	background: #759b34; /* Old browsers */
+	background: -moz-linear-gradient(top, #759b34 0%, #5f8029 98%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#759b34), color-stop(98%,#5f8029)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #759b34 0%,#5f8029 98%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #759b34 0%,#5f8029 98%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #759b34 0%,#5f8029 98%); /* IE10+ */
+	background: linear-gradient(top, #759b34 0%,#5f8029 98%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#759b34', endColorstr='#5f8029',GradientType=0 ); /* IE6-8 */
+	border: 1px solid #c8c8c8;
+	color: #fafafc;
+	font: bold 12px Helvetica, Arial, sans-serif;
+	padding: 5px 10px;
+	text-align: center;
+
+	display: block;
+	margin: 5px 5px 5px auto;
+	clear: both;
+
+}
+
+.nestbutton:hover {
+	background: #83ad3a; /* Old browsers */
+	background: -moz-linear-gradient(top, #83ad3a 0%, #5f8029 98%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#83ad3a), color-stop(98%,#5f8029)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #83ad3a 0%,#5f8029 98%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #83ad3a 0%,#5f8029 98%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #83ad3a 0%,#5f8029 98%); /* IE10+ */
+	background: linear-gradient(top, #83ad3a 0%,#5f8029 98%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#83ad3a', endColorstr='#5f8029',GradientType=0 ); /* IE6-8 */
+}
+	
+
+/* ============================= */
+/* ! Layout for mobile version   */
+/* ============================= */
+
+@media handheld, only screen and (max-width: 767px) {
+
+	body {
+
+	}
+
+	#topleft {
+		padding-top: 20px;
+		position: relative;
+		height: 100px;
+		text-align: center;
+	}
+
+	#topright {
+		padding-bottom: 30px;
+		position: relative;
+		height: 220px;
+		text-align: center;
+	}
+
+		#logo, #login {
+			position: relative;
+		}
+
+
+		/* hide reflection in mobile view */
+		#reflection {
+			display: none;
+		}
+
+
+		#login {
+			margin-top: 30px;
+		}
+
+		.inputwrapper {
+			float: none;
+			display: block;
+			margin: 0px auto;
+		}
+
+	.nestbutton {
+		margin: 5px auto;
+		width: 100px;
+	}
+
+}
+
+/* Smaller screens */
+
+@media only screen and (max-width: 1023px) {
+
+
+	#topright {
+		text-align: center;
+	}
+
+	.nestbutton {
+		margin: 5px auto;
+		width: 100px;
+	}
+
+	.inputwrapper {
+		float: none;
+		display: block;
+		margin: 0px auto;
+	}
+
+
+/* ========================================== */
+/* ! Provide higher res assets for iPhone 4   */
+/* ========================================== */
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2) { 
+
+/*	.logo {
+		background: url(logo2x.jpg) no-repeat;
+		background-size: 212px 303px;
+	}*/
+
+}
+
+/* Hack to remove Safari's extra padding. Remove if you don't care about pixel-perfection. */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    .input input, .input textarea, .input select { padding: 4px; }
+}

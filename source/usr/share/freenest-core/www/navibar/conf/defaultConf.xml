@@ -1,0 +1,18 @@
+<?xml version="1.0" ?><topBarMenu>
+        <menuItem text="Home">
+                <menuLink link="/ProjectDASHBOARD">Dashboard</menuLink>
+                <menuLink link="/FreeNEST_Licences">Nest Tool Licences</menuLink>
+        <menuLink link="/ProjectEDITUSER">User details</menuLink><menuLink link="/ProjectSERVICEDESK">Helpdesk</menuLink></menuItem>
+        <menuItem text="Knowledge Sharing">
+
+        <menuLink link="/ProjectFOSWIKI">Wiki</menuLink><menuLink link="/ProjectWEBSVN">WebSVN</menuLink><menuLink link="/ProjectGITWEB">WebGIT Browser</menuLink><menuLink link="/ProjectSTIKKED">Stikked</menuLink></menuItem>
+        <menuItem text="Communication">
+
+        <menuLink link="/ProjectFORUM">Forum</menuLink><menuLink link="/ProjectIRC" popUp="true">IRC Chat       </menuLink><menuLink link="/ProjectIRCLOG">IRC Chat log</menuLink><menuLink link="/ProjectTEAMBOARD">TeamBoard</menuLink><menuLink link="/ProjectBAROSTATS">Barometer Statistics</menuLink><menuLink link="/ProjectTEAMVOTE">Vote</menuLink></menuItem>
+        <menuItem text="Work Collaboration">
+
+        <menuLink link="/ProjectTRAC">Tickets &amp; Tasking</menuLink><menuLink link="/ProjectCHANGEZILLA">Change Management</menuLink><menuLink link="/ProjectBUGZILLA">Defect Management</menuLink><menuLink link="/ProjectTESTLINK">Test Management</menuLink></menuItem>
+        <menuItem text="Administration">
+
+        <menuLink link="/ProjectCONTROLPANEL">Control Panel</menuLink><menuLink link="/ProjectLDAPADMIN">LDAP Management</menuLink><menuLink link="/ProjectCACTI">Server Load Statistics</menuLink></menuItem>
+</topBarMenu>

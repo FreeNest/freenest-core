@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<topBarMenu>
+	<menuItem text="Home">
+		<menuLink link="/ProjectMAINPAGE">Dashboard</menuLink>
+		<menuLink link="/FreeNEST_Licences">Nest Tool Licences</menuLink>
+	</menuItem>
+	<menuItem text="Knowledge Sharing">
+
+	</menuItem>
+	<menuItem text="Communication">
+
+	</menuItem>
+	<menuItem text="Work Collaboration">
+
+	</menuItem>
+	<menuItem text="Administration">
+
+	</menuItem>
+</topBarMenu>

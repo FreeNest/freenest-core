@@ -1,0 +1,139 @@
+install ok installedReading package lists...
+Building dependency tree...
+Reading state information...
+The following packages will be REMOVED:
+  ldap-utils* slapd*
+0 upgraded, 0 newly installed, 2 to remove and 7 not upgraded.
+After this operation, 4,915kB disk space will be freed.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 73977 files and directories currently installed.)
+Removing ldap-utils ...
+Removing slapd ...
+Stopping OpenLDAP: slapd.
+Purging configuration files for slapd ...
+Removing slapd configuration... done
+Processing triggers for man-db ...
+Processing triggers for ureadahead ...
+ureadahead will be reprofiled on next reboot
+Processing triggers for libc-bin ...
+ldconfig deferred processing now taking place
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following NEW packages will be installed:
+  ldap-utils slapd
+Preconfiguring packages ...
+0 upgraded, 2 newly installed, 0 to remove and 7 not upgraded.
+Need to get 0B/1,878kB of archives.
+After this operation, 4,915kB of additional disk space will be used.
+Selecting previously deselected package slapd.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 73714 files and directories currently installed.)
+Unpacking slapd (from .../slapd_2.4.21-0ubuntu5.6_i386.deb) ...
+Selecting previously deselected package ldap-utils.
+Unpacking ldap-utils (from .../ldap-utils_2.4.21-0ubuntu5.6_i386.deb) ...
+Processing triggers for man-db ...
+Processing triggers for ureadahead ...
+Setting up slapd (2.4.21-0ubuntu5.6) ...
+  Creating initial slapd configuration... done.
+Starting OpenLDAP: slapd.
+
+Setting up ldap-utils (2.4.21-0ubuntu5.6) ...
+Processing triggers for libc-bin ...
+ldconfig deferred processing now taking place
+Replacing "LDAP_ROOT_USER_NAME" with "adminuser" (case sensitive) (partial words matched)
+Replacing "LDAP_ADMIN_PASSWORD_HASH" with "{MD5}T1zsdcdEvTm1Em3ru3z/uA==
+" (case sensitive) (partial words matched)
+Replacing "LDAP_PATH_TO_TMPDIR" with "/nestcontrol/installer/working" (case sensitive) (partial words matched)
+Replacing "FREENEST_ADMINUSER_PASSWORD" with "AdminUser" (case sensitive) (partial words matched)
+Replacing "FREENEST_ADMINUSER_EMAIL" with "adminuser@freenestdemoserver.localdomain" (case sensitive) (partial words matched)
+SASL/EXTERNAL authentication started
+SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+SASL SSF: 0
+adding new entry "cn=cosine,cn=schema,cn=config"
+
+SASL/EXTERNAL authentication started
+SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+SASL SSF: 0
+adding new entry "cn=inetorgperson,cn=schema,cn=config"
+
+SASL/EXTERNAL authentication started
+SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+SASL SSF: 0
+adding new entry "cn=nis,cn=schema,cn=config"
+
+SASL/EXTERNAL authentication started
+SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+SASL SSF: 0
+adding new entry "cn=module{0},cn=config"
+
+adding new entry "olcDatabase={1}hdb,cn=config"
+
+SASL/EXTERNAL authentication started
+SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+SASL SSF: 0
+adding new entry "dc=project,dc=nest"
+
+adding new entry "cn=adminuser,dc=project,dc=nest"
+
+SASL/EXTERNAL authentication started
+SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+SASL SSF: 0
+modifying entry "olcDatabase={-1}frontend,cn=config"
+
+modifying entry "olcDatabase={0}config,cn=config"
+
+modifying entry "olcDatabase={0}config,cn=config"
+
+modifying entry "olcDatabase={0}config,cn=config"
+
+modifying entry "olcDatabase={1}hdb,cn=config"
+
+adding new entry "ou=ProjectMEMBERS,dc=project,dc=nest"
+
+adding new entry "ou=DisabledMEMBERS,dc=project,dc=nest"
+
+adding new entry "uid=AdminUser,ou=ProjectMEMBERS,dc=project,dc=nest"
+
+adding new entry "uid=DemoUser,ou=ProjectMEMBERS,dc=project,dc=nest"
+
+adding new entry "uid=RssUser,ou=ProjectMEMBERS,dc=project,dc=nest"
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following packages will be REMOVED:
+  ldap-utils* slapd*
+0 upgraded, 0 newly installed, 2 to remove and 7 not upgraded.
+After this operation, 4,915kB disk space will be freed.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 73977 files and directories currently installed.)
+Removing ldap-utils ...
+Removing slapd ...
+Stopping OpenLDAP: slapd.
+Purging configuration files for slapd ...
+Removing slapd configuration... done
+Processing triggers for man-db ...
+Processing triggers for ureadahead ...
+Processing triggers for libc-bin ...
+ldconfig deferred processing now taking place
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following NEW packages will be installed:
+  ldap-utils slapd
+Preconfiguring packages ...
+0 upgraded, 2 newly installed, 0 to remove and 7 not upgraded.
+Need to get 0B/1,878kB of archives.
+After this operation, 4,915kB of additional disk space will be used.
+Selecting previously deselected package slapd.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 73714 files and directories currently installed.)
+Unpacking slapd (from .../slapd_2.4.21-0ubuntu5.6_i386.deb) ...
+Selecting previously deselected package ldap-utils.
+Unpacking ldap-utils (from .../ldap-utils_2.4.21-0ubuntu5.6_i386.deb) ...
+Processing triggers for man-db ...
+Processing triggers for ureadahead ...
+Setting up slapd (2.4.21-0ubuntu5.6) ...
+  Creating initial slapd configuration... done.
+Starting OpenLDAP: slapd.
+
+Setting up ldap-utils (2.4.21-0ubuntu5.6) ...
+Processing triggers for libc-bin ...
+ldconfig deferred processing now taking place

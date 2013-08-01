@@ -1,0 +1,36 @@
+Template: freenest-core/machine_hostname
+Type: string
+Default: freenestdemoserver
+Description: Machine hostname
+ Hostname is a unique name that is used to identify your host in the network. Hostname is also the name that appears in the login page (default: freenestdemoserver).
+
+Template: freenest-core/domain_name
+Type: string
+Default: localdomain
+Description: Domain name
+ Domain name is web address (e.g. "freenest.org") that points to an IP address (default: localdomain).
+
+Template: freenest-core/ldap_adminuser_passwd
+Type: password
+Default: adminuser
+Description: LDAP admin account password
+ LDAP adminuser password is used when adminuser logs into LDAP.
+
+Template: freenest-core/freenest_adminuser_passwd
+Type: password
+Default: AdminUser
+Description: FreeNEST admin user password
+ Password which is required when user is logging into FreeNEST website as AdminUser. AdminUser has all the rights to control the FreeNEST and set new users and such.
+
+Template: freenest-core/freenest_adminuser_email
+Type: string
+Default:
+Description: FreeNEST admin user email
+ This is the e-mail address where all FreeNEST administration specific information are sent.
+
+Template: freenest-core/freenest_rssuser_passwd
+Type: password
+Default: RssUser
+Description: FreeNEST RSS user password
+ Password is used to access local RSS feeds.
+

@@ -1,0 +1,44 @@
+#!/bin/sh
+
+set -e
+
+. /usr/share/debconf/confmodule
+
+db_purge
+
+# Removes our ports.conf and then we return the old one so apache wont explode
+rm -f /etc/apache2/ports.conf
+if [ -f "/usr/share/freenest-core/confs/orig_ports.conf" ]; then
+	cp -f /usr/share/freenest-core/confs/orig_ports.conf /etc/apache2/ports.conf
+fi
+
+# Removes ProjectMAINPAGE folder from /var/www folder
+rm -r -f /var/www/ProjectMAINPAGE
+
+# Removes nest files from /var/www folder
+rm -f /var/www/index.php
+rm -f /var/www/auth.php
+rm -r -f /var/www/navibar
+rm -r -f /var/www/css
+rm -r -f /var/www/js
+rm -f /var/www/jquery.js
+rm -r -f /var/www/navibar
+rm -f  /var/www/logoff.php
+rm -r -f /var/www/FreeNEST_Licences
+rm -r -f /var/www/lib
+
+# Removes nest files from /var/www2 folder
+rm -r -f /var/www2
+
+# Starts all needed services
+service slapd start 2>/dev/null 1>/dev/null
+echo "done"
+printf "Configuring: mysql ..."
+service mysql restart 2>/dev/null 1>/dev/null
+echo "done"
+# Removes freenest-core folder from usr/share/
+#rm -r -f /usr/share/freenest-core
+
+#DEBHELPER#
+
+exit 0

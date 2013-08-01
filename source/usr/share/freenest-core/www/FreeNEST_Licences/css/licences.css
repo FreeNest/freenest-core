@@ -1,0 +1,28 @@
+#licences_page_container { font-family: Helvetica, Arial, sans-serif; font-size: 13px; line-height: 18px; }
+html, body {margin: 0; padding: 0; height: 100%; background: #fafafc;}
+h1,h2,h3,h4,h5,h6 {font-family: Helvetica, Arial, sans-serif;}
+h1 { font-size: 30px; line-height: 36px;} 
+h2 { font-size: 24px; line-height: 36px;} 
+h3 { font-size: 18px; line-height: 27px;} 
+h4,h5,h6 { line-height: 18px;} 
+h4 { font-size: 14px;} 
+h5 { font-size: 12px;} 
+h6 { font-size: 11px; text-transform: uppercase;}
+.clearer { clear: both; }
+a {color: #5F8029; text-decoration: none;}
+a:hover {text-decoration: underline;}
+#licences_page_container { margin: 0 auto; height: 100%;}
+#licences_left_paragraph { float: left; min-width: 200px; background: #fafafc; padding-top: 30px; margin-top: 10px; padding-left: 25px; padding-bottom: 20px; margin-bottom: 20px; color: #3b5975;}
+#licences_right_paragraph { float: left; width: 754px; padding-left: 40px; padding-top: 30px; margin-top: 10px; margin-bottom: 40px; border-left: 2px dotted #ebebeb;}
+.license_green { color: #5F8029 }
+.all_caps { text-transform: capitalize; }
+#nest_logo_license_page {  }
+#licences_page_container ul { list-style: none; }
+#licences_page_container img.icon { padding-right: 5px; }
+#licences_left_paragraph ul li { cursor: pointer; }
+.silver { display: none; background: #EBEBEB; padding: 5px; word-wrap: break-word;}
+#licences_left_paragraph ul li { cursor: pointer; }
+#licences_left_paragraph ul li:hover { text-decoration: underline; }
+.licence_page_bold { font-weight: bold; }
+.silver ol li { margin-left: 20px;}
+#licences_left_paragraph li {-moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -o-user-select: none; user-select: none;}

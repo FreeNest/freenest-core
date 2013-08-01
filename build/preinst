@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+	echo "♫ ♪ ♪"
+
+#DEBHELPER#
+
+exit 0

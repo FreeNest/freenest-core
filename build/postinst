@@ -1,0 +1,205 @@
+#!/bin/bash -e
+
+#The architecture of the machine.
+ARCH=`uname -a |awk '{print $14}'`
+
+#The file where dbconfig-common saves the new database user's authentication information
+PATHTODBCONF="/usr/share/freenest-core/confs/dbconfig.sh"
+
+# Including debconf and dbconfig-common specific stuff
+. /usr/share/debconf/confmodule
+. /usr/share/dbconfig-common/dpkg/postinst.mysql
+
+dbc_generate_include="sh:$PATHTODBCONF"
+
+dbc_go freenest-core $@
+
+#Get the values the user has given
+db_get freenest-core/machine_hostname
+
+#These values are send to python scripts as a parameter. There the values are parsed and stored to config object
+machine_hostname="network;hostname;$RET"
+machine_hostname_rpl="$RET"
+
+db_get freenest-core/domain_name
+domain_name="network;domain;$RET"
+domain_name_rpl="$RET"
+
+db_get freenest-core/ldap_adminuser_passwd
+ldap_adminuser_passwd="ldap;root_password;$RET"
+
+db_get freenest-core/freenest_adminuser_passwd
+freenest_adminuser_passwd="ldap;freenest_adminuser_password;$RET"
+
+db_get freenest-core/freenest_adminuser_email
+freenest_adminuser_email="ldap;freenest_adminuser_email;$RET"
+
+#Create a 'dbconfig' style file that contains the RssUser password so it can be used in other tools
+db_get freenest-core/freenest_rssuser_passwd
+freenest_rssuser_passwd="ldap;freenest_rssuser_password;$RET"
+printf "<?php\n## This file contains RssUser password\n\$rsspass='$RET';" > /usr/share/freenest-core/confs/rssconfig.php
+chown www-data /usr/share/freenest-core/confs/rssconfig.php
+chmod 600 /usr/share/freenest-core/confs/rssconfig.php
+
+db_stop
+
+#Include the mysql conf file
+. $PATHTODBCONF
+mysql_adminuser_passwd="database;mysql_passwd;$dbpass"
+mysql_adminuser_uname="database;mysql_uname;$dbuser"
+
+#Put the values to array - The array is passed to python script as parameter later in this script
+parameters=($machine_hostname $domain_name $ldap_adminuser_passwd $freenest_adminuser_passwd $freenest_adminuser_email $freenest_rssuser_passwd $mysql_adminuser_passwd $mysql_adminuser_uname)
+
+# If there are no www folder in /var/, this makes it.
+if [ ! -d "/var/www" ]; then
+        mkdir /var/www
+
+fi
+
+# If there are no www2 folder in /var/, this makes it.
+if [ ! -d "/var/www2" ]; then
+        mkdir /var/www2
+
+fi
+
+#Copies old ports.conf to scripts
+cp /etc/apache2/ports.conf /usr/share/freenest-core/confs/orig_ports.conf
+
+# Copy new ports.conf over old
+cp /usr/share/freenest-core/confs/ports.conf /etc/apache2/
+
+# Copies the original ldap folder to safety.
+cp -r /etc/ldap /usr/share/freenest-core/confs/ldap_orig
+
+if [ -f "/etc/apache2/sites-available/default" ]; then
+	cp /etc/apache2/sites-available/default /usr/share/freenest-core/confs/orig_default
+fi
+
+if [ -f "/etc/apache2/sites-available/default-ssl" ]; then
+	cp /etc/apache2/sites-available/default-ssl /usr/share/freenest-core/confs/orig_default-ssl
+fi
+
+if [ -f "/etc/apache2/mods-available/proxy.conf" ]; then
+	cp /etc/apache2/mods-available/proxy.conf /usr/share/freenest-core/confs/orig_proxy.conf
+fi
+
+if [ -f "/etc/apache2/mods-available/proxy_html.conf" ]; then
+	cp /etc/apache2/mods-available/proxy_html.conf /usr/share/freenest-core/confs/orig_proxy_html.conf
+fi
+
+if [ -f "/etc/apache2/mods-available/dav_svn.conf" ]; then
+	cp /etc/apache2/mods-available/dav_svn.conf /usr/share/freenest-core/confs/orig_dav_svn.conf
+fi
+
+# If apache's index.html exist, remove it
+if [ -f "/var/www/index.html" ]; then
+        rm /var/www/index.html
+fi
+
+# Creates symbolic links from nest folder to var/www
+ln -s -f /usr/share/freenest-core/www/index.php /var/www/index.php
+ln -s -f /usr/share/freenest-core/www/auth.php /var/www/auth.php
+ln -s -f /usr/share/freenest-core/www/auth2.php /var/www/auth2.php
+ln -s -f /usr/share/freenest-core/www/ProjectMAINPAGE /var/www/ProjectMAINPAGE
+ln -s -f /usr/share/freenest-core/www/FreeNEST_Licences /var/www/FreeNEST_Licences
+ln -s -f /usr/share/freenest-core/www/jquery.js /var/www/jquery.js
+ln -s -f /usr/share/freenest-core/www/navibar /var/www/navibar
+ln -s -f /usr/share/freenest-core/www/logoff.php /var/www/logoff.php
+ln -s -f /usr/share/freenest-core/www/lib /var/www/lib
+ln -s -f /usr/share/freenest-core/www/favicon.ico /var/www/favicon.ico
+
+# Creates symbolic links from nest folder to var/www2
+ln -s -f /usr/share/freenest-core/www2/favicon.ico /var/www2/favicon.ico
+ln -s -f /usr/share/freenest-core/www2/index.php /var/www2/index.php
+ln -s -f /usr/share/freenest-core/www2/css /var/www2/css
+ln -s -f /usr/share/freenest-core/www2/images /var/www2/images
+ln -s -f /usr/share/freenest-core/www2/js /var/www2/js
+
+# Sets www-data the as owner of topbarConfig.xml
+chown www-data /usr/share/freenest-core/www/navibar/conf/topbarConfig.xml
+
+# Creates symbolic links of jquery files to www folders
+ln -s -f /usr/share/javascript/jquery/jquery.js /usr/share/freenest-core/www/ProjectMAINPAGE/js/jquery.js
+ln -s -f /usr/share/javascript/jquery/jquery.js /usr/share/freenest-core/www/jquery.js
+ln -s -f /usr/share/javascript/jquery/jquery.js /usr/share/freenest-core/www/navibar/js/jquery.js
+ln -s -f /usr/share/javascript/jquery/jquery.js /usr/share/freenest-core/www2/jquery.js
+ln -s -f /usr/share/javascript/jquery/jquery.js /usr/share/freenest-core/www2/js/jquery.js
+ln -s -f /usr/share/javascript/jquery-metadata/jquery-metadata.js /usr/share/freenest-core/www/navibar/js/jqueryUI/development-bundle/external/jquery.metadata.js
+ln -s -f /usr/share/javascript/jquery-cookie/jquery-cookie.js /usr/share/freenest-core/www/navibar/js/jqueryUI/development-bundle/external/jquery.cookie.js
+
+# Creates symbolic links to apche2/conf.d folder
+ln -s -f /usr/share/freenest-core/confs/freenest-core.conf /etc/apache2/conf.d/freenest-core.conf
+ln -s -f /usr/share/freenest-core/confs/main_login.conf /etc/apache2/conf.d/main_login.conf
+
+# Stops slapd (Stand-alone LDAP Daemon)
+service slapd stop > /dev/null 2>&1
+
+# Removes the so called default ldap directory/database from ldap folder
+rm -f /etc/ldap/slapd.d/cn\=config/olcDatabase\=\{1\}hdb.ldif
+
+# Starts slapd
+service slapd start > /dev/null 2>&1
+
+# Runs the freenest installation script
+python /usr/share/freenest-core/scripts/nestcontrol install ${parameters[@]}
+
+#rm -f $PATHTODBCONF
+
+# Copies new nest specific configuration files to apache folder
+cp /usr/share/freenest-core/confs/default /etc/apache2/sites-available/
+cp /usr/share/freenest-core/confs/www2 /etc/apache2/sites-available/
+cp /usr/share/freenest-core/confs/default-ssl /etc/apache2/sites-available/
+
+cp /usr/share/freenest-core/confs/proxy_html.load /etc/apache2/mods-available/
+cp /usr/share/freenest-core/confs/proxy.conf /etc/apache2/mods-available
+cp /usr/share/freenest-core/confs/proxy_html.conf /etc/apache2/mods-available
+cp /usr/share/freenest-core/confs/dav_svn.conf /etc/apache2/mods-available
+
+# Replaces proxy.conf file placeholders (webmin uses it, maybe some other too)
+rpl "HostName_PLACEHOLDER" $machine_hostname_rpl /etc/apache2/mods-available/proxy.conf > /dev/null 2>&1
+rpl "Domain_PLACEHOLDER" $domain_name_rpl /etc/apache2/mods-available/proxy.conf > /dev/null 2>&1
+
+# Replaces freenest-core.conf placeholders
+rpl "HostName_PLACEHOLDER" $machine_hostname_rpl /usr/share/freenest-core/confs/freenest-core.conf > /dev/null 2>&1
+rpl "Domain_PLACEHOLDER" $domain_name_rpl /usr/share/freenest-core/confs/freenest-core.conf > /dev/null 2>&1
+
+printf "Linking libxml2.so.2..."
+ln -s -f "/usr/lib/$ARCH-linux-gnu/libxml2.so.2" /usr/lib/libxml2.so.2
+echo "Done!"
+# Replaces dav_svn.conf placeholders
+rpl "HostName_PLACEHOLDER" $machine_hostname_rpl /etc/apache2/mods-available/dav_svn.conf > /dev/null 2>&1
+rpl "Domain_PLACEHOLDER" $domain_name_rpl /etc/apache2/mods-available/dav_svn.conf > /dev/null 2>&1
+
+printf "Configuring Apache..."
+
+# Enmods new mod files (these are silented)
+a2enmod ssl > /dev/null 2>&1
+a2enmod proxy > /dev/null 2>&1
+a2enmod proxy_html > /dev/null 2>&1
+a2enmod ldap > /dev/null 2>&1
+a2enmod rewrite > /dev/null 2>&1
+a2enmod dav > /dev/null 2>&1
+a2enmod wsgi > /dev/null 2>&1
+a2enmod authnz_ldap > /dev/null 2>&1
+
+# Ensites new site files (these are silented)
+a2ensite default > /dev/null 2>&1
+a2ensite www2 > /dev/null 2>&1
+a2ensite default-ssl > /dev/null 2>&1
+
+# Removes the working folder
+rm -r -f /usr/share/freenest-core/scripts/installer/working
+
+#mysql_upgrade -uroot -padminuser --force
+
+# Restarts all needed services (these are silented)
+service slapd restart > /dev/null 2>&1
+service mysql restart > /dev/null 2>&1
+service apache2 restart > /dev/null 2>&1
+
+echo "Done! "
+
+#DEBHELPER#
+
+exit 0

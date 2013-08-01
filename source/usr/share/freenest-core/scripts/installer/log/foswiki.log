@@ -1,0 +1,7 @@
+chown: cannot access `/usr/local/nest_tools/Foswiki/data/': No such file or directory
+chmod: cannot access `/usr/local/nest_tools/Foswiki/data/': No such file or directory
+Replacing "NEW_DBADMINUSER@HostName_PLACEHOLDER.Domain_PLACEHOLDER" with "adminuser@freenestdemoserver.localdomain" (case sensitive) (partial words matched)
+Replacing "HostName_PLACEHOLDER.Domain_PLACEHOLDER" with "freenestdemoserver.localdomain" (case sensitive) (partial words matched)
+Replacing "IPADDRESS" with "192.168.51.153" (case sensitive) (partial words matched)
+Replacing "VERSIONPLACEHOLDERSTRING" with "FreeNEST_1.3_Official" (case sensitive) (partial words matched)
+Replacing "RELEASEDATEPLACEHOLDERSTRING" with "2012-01-13" (case sensitive) (partial words matched)

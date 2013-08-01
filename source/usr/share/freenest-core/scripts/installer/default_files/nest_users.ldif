@@ -1,0 +1,110 @@
+
+#dn: cn=adminuser,dc=project,dc=nest
+#cn: adminuser
+#description: LDAP adminuseristrator
+#objectclass: simpleSecurityObject
+#objectclass: organizationalRole
+#userpassword: secret
+
+dn: ou=ProjectMEMBERS,dc=project,dc=nest
+objectclass: organizationalUnit
+objectclass: top
+ou: ProjectMEMBERS
+
+dn: ou=DisabledMEMBERS,dc=project,dc=nest
+objectclass: organizationalUnit
+objectclass: top
+ou: DisabledMEMBERS
+
+# Entry 1: uid=AdminUser,ou=ProjectMEMBERS,dc=project,dc=nest
+dn: uid=AdminUser,ou=ProjectMEMBERS,dc=project,dc=nest
+cn: AdminUser
+displayname: Admin User
+gecos: AdminUser
+gidnumber: 10000
+givenname: Admin
+homedirectory: /home/admin
+homephone: +35800000000 
+initials: A U
+l: Finland
+loginshell: /bin/bash
+mail: FREENEST_ADMINUSER_EMAIL
+mobile: +3580000000
+o: Example
+objectclass: inetOrgPerson
+objectclass: posixAccount
+objectclass: shadowAccount
+postalcode: 31000
+shadowexpire: -1
+shadowflag: 0
+shadowlastchange: 10877
+shadowmax: 999999
+shadowmin: 8
+shadowwarning: 7
+sn: User
+title: System Administrator
+uid: AdminUser
+uidnumber: 1000
+userpassword: FREENEST_ADMINUSER_PASSWORD
+
+# Entry 2: uid=DemoUser,ou=ProjectMEMBERS,dc=project,dc=nest
+dn: uid=DemoUser,ou=ProjectMEMBERS,dc=project,dc=nest
+cn: DemoUser
+displayname: Demo User
+gecos: DemoUser
+gidnumber: 10000
+givenname: Demo
+homedirectory: /home/demouser
+homephone: +3580000000
+initials: D U
+l: Finland
+loginshell: /bin/bash
+mail: demouser@freenest.org
+mobile: +3580000000
+o: Example
+objectclass: inetOrgPerson
+objectclass: posixAccount
+objectclass: shadowAccount
+postalcode: 31000
+shadowexpire: -1
+shadowflag: 0
+shadowlastchange: 10877
+shadowmax: 999999
+shadowmin: 8
+shadowwarning: 7
+sn: User
+title: Nest demo User
+uid: DemoUser
+uidnumber: 1000
+userpassword: DemoUser
+
+# Entry 3: uid=RssUser,ou=ProjectMEMBERS,dc=project,dc=nest
+dn: uid=RssUser,ou=ProjectMEMBERS,dc=project,dc=nest
+cn: RssUser
+displayname: Rss User
+gecos: RssUser
+gidnumber: 10000
+givenname: Rss
+homedirectory: /home/rssuser
+homephone: +3580000000
+initials: D U
+l: Finland
+loginshell: /bin/bash
+mail: rssuser@freenest.org
+mobile: +3580000000
+o: Example
+objectclass: inetOrgPerson
+objectclass: posixAccount
+objectclass: shadowAccount
+postalcode: 31000
+shadowexpire: -1
+shadowflag: 0
+shadowlastchange: 10877
+shadowmax: 999999
+shadowmin: 8
+shadowwarning: 7
+sn: User
+title: Nest RSS User
+uid: RssUser
+uidnumber: 1000
+userpassword: FREENEST_RSSUSER_PASSWORD

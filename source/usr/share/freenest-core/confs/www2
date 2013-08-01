@@ -1,0 +1,11 @@
+NameVirtualHost *:80
+<VirtualHost *:80>
+DocumentRoot /var/www2/
+<Directory /var/www2/>
+allow from all
+Options +Indexes
+</Directory>
+</VirtualHost>
+
+
+

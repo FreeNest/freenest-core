@@ -1,0 +1,12 @@
+Replacing "NEW_DBADMINUSER@HostName_PLACEHOLDER.Domain_PLACEHOLDER" with "adminuser@freenestdemoserver.localdomain" (case sensitive) (partial words matched)
+Replacing "NEW_DBADMINUSER@HostName_PLACEHOLDER.Domain_PLACEHOLDER" with "adminuser@freenestdemoserver.localdomain" (case sensitive) (partial words matched)
+Replacing "NEW_DBADMINUSER@HostName_PLACEHOLDER.Domain_PLACEHOLDER" with "adminuser@freenestdemoserver.localdomain" (case sensitive) (partial words matched)
+Replacing "HostName_PLACEHOLDER" with "freenestdemoserver" (case sensitive) (partial words matched)
+Replacing "Domain_PLACEHOLDER" with "localdomain" (case sensitive) (partial words matched)
+Replacing "HostName_PLACEHOLDER.Domain_PLACEHOLDER" with "freenestdemoserver.localdomain" (case sensitive) (partial words matched)
+Replacing "NEW_ADMINUSER" with "AdminUser" (case sensitive) (partial words matched)
+Replacing "ADMINUSER_REALNAME" with "Admin User" (case sensitive) (partial words matched)
+Replacing "NEW_PASSWORDHASH" with "4f5cec75c744bd39b5126debbb7cffb8" (case sensitive) (partial words matched)
+Replacing "NEW_DATABASEUSER" with "adminuser" (case sensitive) (partial words matched)
+Replacing "NEW_PASSWORD" with "adminuser" (case sensitive) (partial words matched)
+ERROR 1396 (HY000) at line 5: Operation CREATE USER failed for 'adminuser'@'%'

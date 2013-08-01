@@ -1,0 +1,42 @@
+#!/bin/sh -e
+
+. /usr/share/debconf/confmodule
+
+if [ -f "/usr/share/dbconfig-common/dpkg/config.mysql" ]; then
+	. /usr/share/dbconfig-common/dpkg/config.mysql
+fi
+#Ask the questions in this order
+db_input high freenest-core/machine_hostname || true
+db_go || true
+
+db_input high freenest-core/domain_name || true
+db_go || true
+
+db_input high freenest-core/ldap_adminuser_passwd || true
+db_go || true
+
+db_input high freenest-core/freenest_adminuser_passwd || true
+db_go || true
+
+#For adminuser's email question set the default value to adminuser@hostname.domainname
+db_get freenest-core/machine_hostname
+hostname=$RET
+
+db_get freenest-core/domain_name
+def_email="adminuser@$hostname.$RET"
+
+db_set freenest-core/freenest_adminuser_email $def_email
+
+db_input high freenest-core/freenest_adminuser_email || true
+db_go || true
+
+db_input high freenest-core/freenest_rssuser_passwd || true
+db_go || true
+
+if [ -f "/usr/share/dbconfig-common/dpkg/config.mysql" ]; then
+	dbc_go freenest-core $@
+fi
+
+#DEBHELPER#
+
+exit 0

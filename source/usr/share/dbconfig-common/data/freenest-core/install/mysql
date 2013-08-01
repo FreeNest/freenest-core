@@ -1,0 +1,62 @@
+
+CREATE TABLE `message` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'shout id number',
+  `uid` int(11) NOT NULL COMMENT 'receipant id number',
+  `message` varchar(1000) NOT NULL COMMENT 'the message',
+  `messageReceived` DATETIME NOT NULL,
+  `unread` tinyint(1) NOT NULL COMMENT 'has the message been read? (defaults to yes)',
+  `sender_uid` int(11) NOT NULL COMMENT 'sender uid',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=114 DEFAULT CHARSET=latin1 COMMENT='Nest shout system storage table';
+
+
+CREATE TABLE `software` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `address` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+
+
+LOCK TABLES `software` WRITE;
+INSERT INTO `software` VALUES (1,'bugzilla','Error Reporting','/bugzilla3'),(2,'cacti','Statistics','/cacti'),(3,'cgi-irc','Chat','/cgi-irc'),(4,'foswiki','Wiki','/foswiki'),(5,'glpi','Helpdesk','/glpi'),(6,'phpbb','Forum','/phpBB3'),(7,'phpldapadmin','LDAP Authentication Management','/phpldapadmin3'),(8,'requzilla','Change Suggestions','/bugzilla3'),(9,'statsvn','Version Control Statistics','/statsvn'),(10,'testlink','Product Testing','/testlink'),(11,'trac','Tickets','/trac1'),(12,'web2project','Project Management','/web2project'),(13,'webmin','Web Server Administration','');
+UNLOCK TABLES;
+
+CREATE TABLE `status` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(25) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COMMENT='The possible statuses the user can have';
+
+
+LOCK TABLES `status` WRITE;
+INSERT INTO `status` VALUES (1,'Online'),(2,'Idle'),(3,'Signed Off');
+UNLOCK TABLES;
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `status_id` int(11) NOT NULL COMMENT 'The status id of the users current status',
+  `last_act` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'last time the user acted',
+  `last_used_software` varchar(40) NOT NULL COMMENT 'The software the user last used',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+LOCK TABLES `users` WRITE;
+INSERT INTO `users` VALUES (1,'AdminUser',3,'2012-01-18 13:25:15',''),(2,'DemoUser',3,'2011-12-14 13:45:43','webmin');
+UNLOCK TABLES;
+
+CREATE TABLE `users_software` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `is_favorite` tinyint(1) DEFAULT '0',
+  `user_id` int(11) NOT NULL,
+  `software_id` int(11) NOT NULL,
+  `software_user_id` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_users` (`user_id`),
+  KEY `fk_software` (`software_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Links users and software.';
+
+
+

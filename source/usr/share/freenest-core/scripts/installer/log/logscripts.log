@@ -1,0 +1,5 @@
+
+rpl: File "/nestcontrol/installer/working/logscripts" not found.
+
+rpl: File "/nestcontrol/installer/working/logscripts" not found.
+cp: cannot stat `/nestcontrol/installer/working/logscripts': No such file or directory

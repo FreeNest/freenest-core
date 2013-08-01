@@ -1,0 +1,26 @@
+<script type="text/javascript" media="all" src="jquery.js" ></script>
+<?php
+	
+	// header( 'Location: https://'.$_SERVER["SERVER_NAME"] ) ;
+	$uname=strip_tags($_POST['username']);
+	$pw=strip_tags($_POST['password']);
+	echo "Logging in...\n";
+	echo 	"<script type='text/javascript'>
+			var response = $.ajax({
+  				url: 'auth2.php',
+  				username: '$uname',
+				password: '$pw',
+				async: false
+ 			}).responseText;
+			
+			if(response==true)
+			{
+				window.location='/ProjectMAINPAGE';
+			}
+			else
+			{
+				window.location='http://'+document.domain+'?status=badcredentials';
+			}
+		</script>";
+?>
+

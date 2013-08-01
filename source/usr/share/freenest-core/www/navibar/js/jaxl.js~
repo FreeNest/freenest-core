@@ -1,0 +1,240 @@
+/**
+ * Jaxl (Jabber XMPP Library)
+ *
+ * Copyright (c) 2009-2010, Abhinav Singh <me@abhinavsingh.com>.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *   * Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *
+ *   * Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in
+ *     the documentation and/or other materials provided with the
+ *     distribution.
+ *
+ *   * Neither the name of Abhinav Singh nor the names of his
+ *     contributors may be used to endorse or promote products derived
+ *     from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+
+$.use("call_user_func.js");
+
+
+/**
+ @author Abhinav Singh <me@abhinavsingh.com>
+ @author Riku Hokkanen (commented and cleared for Nest)
+ @copyright Abhinav Singh
+ @link http://code.google.com/p/jaxl
+ @namespace Holds logic for javascript client and helper functions
+*/
+var jaxl = function () {
+
+   /** Poll rate in milliseconds */
+   var pollRate = 500;
+   
+   /**@public
+   Address of webchat php */
+   var pollUrl = false;
+   var jid = false;
+   var polling = 0;
+   var lastPoll = false;
+   var connected = false;
+   var disconnecting = false;
+   var payloadHandler = false;
+   var date = new Date();
+   var payloadQueue = new Array();
+   
+   
+   return {
+      connect:connect,
+      disconnect:disconnect,
+      ping:ping,
+      sendPayLoad:sendPayLoad,
+      urlDecode:urlDecode,
+      urlEncode:urlEncode,
+      setPollUrl:setPollUrl,
+      setPayLoadHandler:setPayLoadHandler,
+      setConnected:setConnected,
+      getConnected:getConnected,
+      setJid:setJid,
+      setDisconnecting:setDisconnecting
+   }
+
+   /** Connects to server */
+   function connect (payload) {
+      payload.jaxl = 'connect';
+      sendPayLoad(payload);
+   }
+
+   /** Disconnects from server */
+   function disconnect(payload) {
+      payload.jaxl = 'disconnect';
+      sendPayLoad(payload);
+   }
+
+   /** Pings server */
+   function ping () {
+      var payload = {'jaxl':'ping'};
+      //payload.jaxl = 'ping';
+      sendPayLoad(payload);
+   }
+
+   /** Adds payload to queue, sends payload via ajax */
+   function sendPayLoad (payload) {
+
+   /*
+      var now = date.getTime();
+      payloadQueue.push(payload);
+      
+     // sinceLastPoll = now - lastPoll;
+
+      if( ( now-lastPoll )>pollRate ) {
+         xhtmlRequest(payloadQueue.shift());
+      }
+      
+      */
+      
+      var now = new Date().getTime();
+      if(lastPoll == false) {
+         xhtmlRequest(payload);
+      }
+      else {
+         diff = now-lastPoll;
+
+         if(diff < pollRate) {
+            var xhr = function() { xhtmlRequest(payload); };
+
+            // TO-DO: Use a queue instead
+            setTimeout(xhr, pollRate);
+         }
+         else {
+            xhtmlRequest(payload);
+         }
+      }
+
+   }
+   /** Sends xhtmlRequest to {@link pollUrl}  */
+   function xhtmlRequest (data) {
+      if((polling != 0 || !connected || disconnecting) && data.jaxl == 'ping') return false;
+   
+      $.ajax({
+         type: 'POST',
+         url: pollUrl,
+         data: data, //serializearray..?
+         beforeSend: function () {
+            lastPoll = new Date().getTime();
+            if(data.jaxl === 'disconnect') {
+               disconnecting = true;
+            }
+            ++polling;
+         },
+         success: function (payload) {
+            --polling;
+            handlePayload(payload);
+
+         },
+         error: function(payload) {
+            --polling;
+         }
+
+      });
+   }
+   /**Handles the payload from php. Empty payload pings back to php,
+      if payload.jaxl = 'jaxl', calls function in php,
+      otherwise calls UI's payload handler with payload as argument
+    */
+   function handlePayload(payload) {
+
+      if(payload.length == 0) {
+         ping();
+      }
+      else {
+
+         for(key in payload) {
+            if(key == null ) {
+               
+               ping();
+            }
+            else if(payload[key].jaxl == 'jaxl') {
+               xhtmlRequest(payload[key]);
+            }
+            else {
+               call_user_func(payloadHandler, payload[key]);
+            }
+         } //for
+      }
+
+   }
+
+   function setPollUrl(url) {
+      pollUrl = url;
+   }
+   
+   function setPayLoadHandler(handler) {
+      payloadHandler = handler;
+   }
+   
+   function urlDecode(url) {
+      return decodeURIComponent(url.replace(/\+/g, '%20'));
+   }
+   
+   function urlEncode(url) {
+      return encodeURIComponent(url);
+   }
+   
+   function htmlEntities(text) {
+      return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+   }
+   
+   function stripHtml(html) {
+      return msg.replace(/<\/?[^>]+>/gi,'');
+   }
+   
+   function setConnected(bool) {
+      connected = bool;
+   }
+   
+   function getConnected() {
+      return connected;
+   }
+   
+   
+   function setJid(jids) {
+      jid = jids;
+   }
+   
+   function setDisconnecting(bool) {
+      disconnecting = bool;
+   }
+   
+   /**Splits jid to nick, domain and resource */
+   function splitJid(jid) {
+      part1=jid.split("@");
+      part2=part1[1].split("/");
+      ret=new Object;
+      ret['jid']=part1[0];
+      ret['domain']=part2[0];
+      ret['res']=part2[1];
+      return ret;
+   }
+   
+}();
