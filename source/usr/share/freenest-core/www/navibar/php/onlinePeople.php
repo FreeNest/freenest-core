@@ -41,7 +41,7 @@ $timezone="+3:00";
 	
 	switch($mod){
 		case "nick":
-		getNicks($uname, $pw, $dbname);
+		getNicks($status, $uname, $pw, $dbname);
 		break;
 
 		case "act":
@@ -52,7 +52,6 @@ $timezone="+3:00";
 		getOnline($uname, $pw, $dbname, $timezone);
 		break;
 	}
-	//echo "jou";
 
 
 /*********************************************************************************************************************************************/
@@ -99,7 +98,7 @@ function getOnline($uname, $pw, $dbname){
 	echo mysql_num_rows($nr);
 }
 
-function getNicks($uname, $pw, $dbname){
+function getNicks($status, $uname, $pw, $dbname){
 	
 	try{
 		connect($uname, $pw, $dbname);
@@ -107,7 +106,12 @@ function getNicks($uname, $pw, $dbname){
 		echo 'error';
 		die();
 	}
-	$favSoftIDs = mysql_query("SELECT name FROM users WHERE status_id=1");
+	
+	if ($status == "online")
+		$favSoftIDs = mysql_query("SELECT name FROM users WHERE status_id=1");
+	else
+		$favSoftIDs = mysql_query("SELECT name FROM users WHERE status_id!=1");
+
 	if(!$favSoftIDs){ $rivi.=" Error with the query " ; die('wräygn');}
 	
 	$rows = mysql_num_rows($favSoftIDs);

@@ -755,7 +755,14 @@ function patchWork(user) {
         var peopleOnline = $j.ajax({ 
             type: "POST",
             url: topbarLocation + 'php/onlinePeople.php',
-            data: "mod=nick",
+            data: "mod=nick&status=online",
+            async: false
+        }).responseText;
+
+        var peopleOffline = $j.ajax({ 
+            type: "POST",
+            url: topbarLocation + 'php/onlinePeople.php',
+            data: "mod=nick&status=offline",
             async: false
         }).responseText;
 
@@ -769,32 +776,42 @@ function patchWork(user) {
         usno=0;
         var peoples=peopleOnline.split(';');
         var peoples_act=lastActTime.split(';');     //Split the resulting strings into arrays
-		for(i=0;i<(peoples.length);i++){
-		/*Why oh why I have to trim this thing...*/
-		trimmed = peoples[i].replace(/^\s+|\s+$/g, '');
+        for(i=0;i<(peoples.length);i++)
+        {
+            /*Why oh why I have to trim this thing...*/
+            trimmed = peoples[i].replace(/^\s+|\s+$/g, '');
 
-        if(peoples_act[i].match("minutes")||peoples_act[i].match("seconds")||peoples_act[i].match("minute")||peoples_act[i].match("second")){//WHATISTHISIDONTEVEN
-		    $j('.peepList').append(
-                "<li class='peopleListVisuals' id='"+i+"'><span>" +
-               "<a class='clickable' onClick=\"composeMsg('"+trimmed+"', 0)\">"+trimmed+"</a></li>"
-            );
+            //if(peoples_act[i].match("minutes")||peoples_act[i].match("seconds")||peoples_act[i].match("minute")||peoples_act[i].match("second")){//WHATISTHISIDONTEVEN
+            if (trimmed != "")
+            {
+                $j('.peepList').append(
+                    "<li class='peopleListVisuals' id='"+i+"'><span>" +
+                   "<a class='clickable' onClick=\"composeMsg('"+trimmed+"', 0)\">"+trimmed+"</a></li>"
+                );
+            }
 
-		}
-		else if(peoples_act[i].match("1 hour")){ //is idle, will be marked as such
-            $j('.peepList').append(
-                "<li class='peopleListVisuals' id='"+i+"'><span>" +
-                peoples[i]+"</span></li>"
-            );
-        }
-		else{ //been idle for more than 1h, will be "logged out"
-            $j('.peepList').append(
-            "<li class='peopleListVisuals' id='"+i+"'><span></span></li>"
-            );
-            usno--;
+            usno++;
         }
 
-        usno++;
+        usno=0;
+        var peoples=peopleOffline.split(';');    //Split the resulting strings into arrays
+        for(i=0;i<(peoples.length);i++)
+        {
+            /*Why oh why I have to trim this thing...*/
+            trimmed = peoples[i].replace(/^\s+|\s+$/g, '');
+
+            //if(peoples_act[i].match("minutes")||peoples_act[i].match("seconds")||peoples_act[i].match("minute")||peoples_act[i].match("second")){//WHATISTHISIDONTEVEN
+            if (trimmed != "")
+            {
+                $j('.peepList').append(
+                    "<li class='offline-user peopleListVisuals' id='"+i+"'><span>" +
+                   "<a class='clickable' onClick=\"composeMsg('"+trimmed+"', 0)\">"+trimmed+"</a></li>"
+                );
+            }
+
+            usno++;
         }
+        
     }//END OF getOnlinePeople()
     
     function markActivity(){

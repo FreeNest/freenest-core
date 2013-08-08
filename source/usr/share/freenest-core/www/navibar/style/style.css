@@ -988,3 +988,9 @@ fieldset:not(.fields1) {
 	width: 20%;
 	margin-left: 20px;
 }
+
+.offline-user, .offline-user a
+{
+	font-style: italic !important;
+	color: #c0c0c0 !important; 
+}

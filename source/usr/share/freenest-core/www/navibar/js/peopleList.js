@@ -22,8 +22,6 @@
 var $j = jQuery.noConflict();
 
 function peopleList() {
-	//closeModal();
-	console.log('peeps pressed');
 	$j.modal("<div id='peopleTitle'>"+
 		"<div id='peopleOnlineImage'></div>"+
 		"<div class='peopleDialogTexts'>"+

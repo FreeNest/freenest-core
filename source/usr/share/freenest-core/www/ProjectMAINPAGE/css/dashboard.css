@@ -5,46 +5,47 @@
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dd,dl,dt,li,ol,ul,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;font-weight:normal;font-style:normal;text-align:left;font-family:inherit;}table{border-collapse:collapse;border-spacing:0;}ol,ul{list-style:none;}q:before,q:after,blockquote:before,blockquote:after{content:"";}
 
 html {
-  background: #4c4c4c url(../images/bg.gif) repeat-x;
-	height:100%;
+    background: #4c4c4c url(../images/bg.gif) repeat-x;
+    height:100%;
 }
 
 body {
     color: black;
-  font-family: Diavlo, Tahoma, Arial, Verdana;
-  font-size: 13px;
-	height:auto;
+    font-family: Diavlo, Tahoma, Arial, Verdana;
+    font-size: 13px;
+    height:auto;
 }
 
-h1 {
-margin:0 auto;
-width:400px;
-	padding-top:20px;
-  font-size: 24px;
-  font-weight: normal;
-  text-align:center;
+div#container {
+    margin: 0 auto;
+    width: 1000px;
+    height: 700px;
+    background:url(../images/welcome.png) no-repeat;
+    -moz-background-size: contain;
+    -o-background-size: contain;
+    background-size: contain;
 }
 
-h2 {
-  font-size: 20px;
-  font-weight: normal;
+.mainpage h1 {
+    margin:0 auto;
+    width:400px;
+    padding-top:20px;
+    font-size: 24px;
+    font-weight: normal;
+    text-align:center;
 }
 
-div#container { 
-  margin: 0 auto;
-  width: 1000px;
-  height: 700px;
-  background:url(../images/welcome.png) no-repeat;
-	 -moz-background-size: contain;
-  -o-background-size: contain;
-  background-size: contain;
+.mainpage h2 {
+    font-size: 20px;
+    font-weight: normal;
 }
 
-p{
-margin:0 auto;
-width:400px;
-text-align:center;
-padding-top:20px;
-font-weight: bold;
+
+.mainpage p {
+    margin:0 auto;
+    width:400px;
+    text-align:center;
+    padding-top:20px;
+    font-weight: bold;
 }
 
