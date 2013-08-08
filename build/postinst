@@ -108,6 +108,7 @@ ln -s -f /usr/share/freenest-core/www/navibar /var/www/navibar
 ln -s -f /usr/share/freenest-core/www/logoff.php /var/www/logoff.php
 ln -s -f /usr/share/freenest-core/www/lib /var/www/lib
 ln -s -f /usr/share/freenest-core/www/favicon.ico /var/www/favicon.ico
+ln -s -f /usr/share/freenest-core/www/error /var/www/error
 
 # Creates symbolic links from nest folder to var/www2
 ln -s -f /usr/share/freenest-core/www2/favicon.ico /var/www2/favicon.ico

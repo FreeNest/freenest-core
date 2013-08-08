@@ -16,22 +16,33 @@ printf "Configuring: apache ..."
 
 # Dismods all mod files that nest uses
 
-a2dismod ssl > /dev/null 2>&1
-a2dismod proxy > /dev/null 2>&1
-a2dismod proxy_html > /dev/null 2>&1
-a2dismod authnz_ldap > /dev/null 2>&1
-a2dismod ldap > /dev/null 2>&1
-a2dismod rewrite > /dev/null 2>&1
-a2dismod dav_svn > /dev/null 2>&1
-a2dismod dav > /dev/null 2>&1
-a2dismod wsgi > /dev/null 2>&1
 
-# Removes site files, note. default gets removed too! 
-rm -f /etc/apache2/sites-available/default
-rm -f /etc/apache2/sites-available/www2
-rm -f /etc/apache2/sites-available/default-ssl
-rm -f /etc/apache2/conf.d/freenest-core.conf
-rm -f /etc/apache2/conf.d/main_login.conf
+# a2dismod ssl > /dev/null 2>&1
+# a2dismod proxy > /dev/null 2>&1
+# a2dismod proxy_html > /dev/null 2>&1
+# a2dismod authnz_ldap > /dev/null 2>&1
+# a2dismod ldap > /dev/null 2>&1
+# a2dismod rewrite > /dev/null 2>&1
+# a2dismod dav_svn > /dev/null 2>&1
+# a2dismod dav > /dev/null 2>&1
+# a2dismod wsgi > /dev/null 2>&1
+
+# Removes site files, note. default gets removed too!
+if [ -f "/etc/apache2/sites-available/default" ]; then
+	rm -f /etc/apache2/sites-available/default
+fi
+if [ -f "/etc/apache2/sites-available/www2" ]; then
+	rm -f /etc/apache2/sites-available/www2
+fi
+if [ -f "/etc/apache2/sites-available/default-ssl" ]; then
+	rm -f /etc/apache2/sites-available/default-ssl
+fi
+if [ -f "/etc/apache2/conf.d/freenest-core.conf" ]; then
+	rm -f /etc/apache2/conf.d/freenest-core.conf
+fi
+if [ -f "/etc/apache2/conf.d/main_login.conf" ]; then
+	rm -f /etc/apache2/conf.d/main_login.conf
+fi
 
 # Copies original apache configuration files back that were in safety
 if [ -f "/usr/share/freenest-core/confs/orig_default" ]; then
@@ -51,22 +62,39 @@ if [ -f "/usr/share/freenest-core/confs/orig_dav_svn.conf" ]; then
 fi
 
 # Removes our ports.conf and then we return the old one so apache wont explode
-rm -f /etc/apache2/ports.conf
+if [ -f "/etc/apache2/ports.conf" ]; then
+	rm -f /etc/apache2/ports.conf
+fi
 if [ -f "/usr/share/freenest-core/confs/orig_ports.conf" ]; then
        cp -f /usr/share/freenest-core/confs/orig_ports.conf /etc/apache2/ports.conf
 fi
 
 
 #Delete jquery links from freenest-core folder
-rm -f /usr/share/freenest-core/www/ProjectMAINPAGE/js/jquery.js
-rm -f /usr/share/freenest-core/www/jquery.js
-rm -f /usr/share/freenest-core/www/navibar/js/jquery.js
-rm -f /usr/share/freenest-core/www2/jquery.js
-rm -f /usr/share/freenest-core/www2/js/jquery.js
-rm -f /usr/share/freenest-core/www/navibar/js/jqueryUI/development-bundle/external/jquery.metadata.js
-rm -f /usr/share/freenest-core/www/navibar/js/jqueryUI/development-bundle/external/jquery.cookie.js
-rm -f /etc/apache2/conf.d/main_login.conf
-
+if [ -f "/usr/share/freenest-core/www/ProjectMAINPAGE/js/jquery.js" ]; then
+	rm -f /usr/share/freenest-core/www/ProjectMAINPAGE/js/jquery.js
+fi
+if [ -f "/usr/share/freenest-core/www/jquery.js" ]; then
+	rm -f /usr/share/freenest-core/www/jquery.js
+fi
+if [ -f "/usr/share/freenest-core/www/navibar/js/jquery.js" ]; then
+	rm -f /usr/share/freenest-core/www/navibar/js/jquery.js
+fi
+if [ -f "/usr/share/freenest-core/www2/jquery.js" ]; then
+	rm -f /usr/share/freenest-core/www2/jquery.js
+fi
+if [ -f "/usr/share/freenest-core/www2/js/jquery.js" ]; then
+	rm -f /usr/share/freenest-core/www2/js/jquery.js
+fi
+if [ -f "/usr/share/freenest-core/www/navibar/js/jqueryUI/development-bundle/external/jquery.metadata.js" ]; then
+	rm -f /usr/share/freenest-core/www/navibar/js/jqueryUI/development-bundle/external/jquery.metadata.js
+fi
+if [ -f "/usr/share/freenest-core/www/navibar/js/jqueryUI/development-bundle/external/jquery.cookie.js" ]; then
+	rm -f /usr/share/freenest-core/www/navibar/js/jqueryUI/development-bundle/external/jquery.cookie.js
+fi
+if [ -f "/etc/apache2/conf.d/main_login.conf" ]; then
+	rm -f /etc/apache2/conf.d/main_login.conf
+fi
 
 # Dissites all site files that nest needs
 a2dissite default > /dev/null 2>&1

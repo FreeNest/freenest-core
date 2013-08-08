@@ -70,7 +70,7 @@ $redirect_status_message = array(
 
 $redirect_status = isset($_SERVER['REDIRECT_STATUS']) ? $_SERVER['REDIRECT_STATUS'] : 0;
 $server_name = $_SERVER['SERVER_NAME'];
-$server_url = "http://$server_name";
+$server_url = "https://$server_name";
 $request_uri = $_SERVER['REQUEST_URI'];
 
 // format message
@@ -103,7 +103,7 @@ if ($redirect_status == 100 || $redirect_status == 0) {
 		}
 		body {
 			margin: 0;
-			background: url(error/error.png) no-repeat center top fixed;
+			background: url(/error/error.png) no-repeat center top fixed;
 		}
 		div {
 			max-width: 1024px;

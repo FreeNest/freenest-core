@@ -24,6 +24,7 @@ rm -r -f /var/www/navibar
 rm -f  /var/www/logoff.php
 rm -r -f /var/www/FreeNEST_Licences
 rm -r -f /var/www/lib
+rm -r -f /var/www/error
 
 # Removes nest files from /var/www2 folder
 rm -r -f /var/www2
