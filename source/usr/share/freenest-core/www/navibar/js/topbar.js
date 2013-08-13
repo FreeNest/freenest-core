@@ -1,6 +1,6 @@
 /**
  @author Riku Hokkanen
- 
+
 */
  function loggedIn() {
         var user =  $.ajax({
@@ -10,7 +10,7 @@
             async: false
 
         }).responseText;
-	
+
 	if(user != true)
 	{
 		window.location='http://' + document.domain;
@@ -32,7 +32,7 @@ $j(function () {
 
     // get config after init is done
     $j.when(topbar.init()).done(topbar.getConf);
-    
+
 });
 
 /**@namespace Topbar */
@@ -46,9 +46,9 @@ var topbar = function () {
     var styleSheetLocation = topbarLocation + 'style/style.css';
     var tabMoveSpeed = 100;
     var config = null;
-    
+
     return {
-        'init' : init,        
+        'init' : init,
         'getConf' : getConf,
         'setTabRaiseHeight' : setTabRaiseHeight
     };
@@ -69,7 +69,7 @@ var topbar = function () {
             success: function(ret) {
                 afterTopbarLoad(ret);
                 def.resolve();
-            }            
+            }
         });
         return def.promise();
     }
@@ -92,27 +92,27 @@ var topbar = function () {
     //Stuff to do after topbar structure has been loaded
     function afterTopbarLoad(menus) {
         var topbar = ($j('#topbar').length > 0) ? $j('#topbar') : $j('#topBar'); //as topbar is referred to as both topbar and topBar..
-        
+
         //topbar.replaceWith(menus);
         topbar.append($j(menus).children());
-        
-        
+
+
         //create WikiWord - links
         WikiWordLinks.createLinks();
-        
+
         patchWork(getLoggedUser());
-        
+
         $j('#bottomColour').append(
             '<div id="logins">'+
 			'<span>' + getLoggedUser() + '</span>' +
             '<div id="logoutBtn" title = "Log off" ></div>'+
 			'</div>'
         );
-        
 
-        
+
+
         if( isAdmin() ) addEditButtons();
-        
+
 	// TeamBarometer / TeamVote
                 $j.ajax({
                         url: topbarLocation + 'conf/teamConfig.json',
@@ -131,36 +131,36 @@ var topbar = function () {
                                         initializeVote();
                                 }
                         }
-                });        
-        
-        
+                });
+
+
     //$j(window).knm(function(){window.parent.location='http://www.youtube.com/watch?v=dQw4w9WgXcQ&ob=av2e';});
     }
-    
-    function addTopbarFunctions() {      
+
+    function addTopbarFunctions() {
         createTabs();
 
         //add click events
         $j('.tabButton').click(tabButtonClick);
         $j('.linkButton').click(linkButtonClick);
-                
+
         $j('#logoutBtn').click(logoutBtnClick);
         $j('#nestLogo').click(nestLogoClick);
-        
+
         //changePopUpLinks();
-        
+
         fireFoxHoverPatch();
-        
+
         setTimeout(selectTabAndApp,300);
     }
-    
+
     //prevents popup links from opening to default target, popup instead
 //    function changePopUpLinks() {
-//        $j('a.popUp').click( function(e) { 
+//        $j('a.popUp').click( function(e) {
 //            e.preventDefault();
 //            popUpWindow(e.target.href);
 //        });
-//        
+//
 //    }
 
     function getLoggedUser() {
@@ -171,20 +171,16 @@ var topbar = function () {
             async: false
 
         }).responseText;
-
-
-        return user;
-
-
+        return user.replace(/^\s+/, '').replace(/\s+$/, '');
     }
-    
+
     function isAdmin() {
         return (getLoggedUser() == 'Admin User');
     }
 
-    function tabButtonEvents(event, ui) {        
+    function tabButtonEvents(event, ui) {
         var barColourId = $j(ui.tab).parent().attr('id');
-        
+
         originalButtonHeight = 27;
         originalButtonPosition = 0;
 
@@ -202,12 +198,12 @@ var topbar = function () {
         });
 
     }
-    
+
     //gets id of a tab and selects it
     function tabButtonClick() {
         tabs.tabs("select", getTabButtonIndex(this));
     }
-    
+
     function getTabButtonIndex(button) {
         var href = $j(button).children(':first').attr('href');
         var regex = /[0-9]+/;
@@ -216,7 +212,7 @@ var topbar = function () {
 
     function linkButtonClick() {
         var link = $j(this).children(':first');
-        
+
         var href = link.attr('href');
         if(link.hasClass('popUp')) {
             popUpWindow(href);
@@ -229,24 +225,24 @@ var topbar = function () {
     function setTabRaiseHeight(height) {
         tabRaiseHeight = height;
     }
-    
+
     function logoutBtnClick() {
 
    	window.location=topbarLocation+"php/logoff.php";
 
     }
-    
+
     //The logo should be a link w/ an image, but..
     function nestLogoClick() {
         window.parent.location = topbarLocation + '../ProjectMAINPAGE';
     }
-    
+
     function createTabs() {
-        
+
             tabs = jQuery("#topbarMenu").tabs({ select: tabButtonEvents, selected: -1, add:onAddTab});
             $j('.topbarTabs').disableSelection(); //disable text selection
     }
-   
+
     function selectTabAndApp() {
         var location = getLocation();
         var menu = null;
@@ -261,7 +257,7 @@ var topbar = function () {
             while(menu.links[appIndex]) {
                 link = menu.links[appIndex]['@attributes']['link'];
                 if(location === getPathRoot(link)) {
-                    
+
                     tabs.tabs("select", menuTabIndex);
                     $j('#tab_' + menuTabIndex + ' div').eq(appIndex).addClass('selected');
                     return;
@@ -271,7 +267,7 @@ var topbar = function () {
             ++menuTabIndex;
         }
     }
-    
+
 /** Editing stuff.. and this really would need objects. Feat lots of inline html
 */
 
@@ -283,41 +279,41 @@ var topbar = function () {
         widgetSlot.append(container);
         $j('#topbar-widget-container').prepend(widgetSlot);
     }
-    
+
     function startEditing() {
-    
+
         var saveButton = createButton('Save', saveTopbar);
         var stopEditButton = createButton('Cancel', reloadTopbar); //might be better to just reload topbar
         var resetButton = createButton('Reset', resetDialog);
         var editButtonsContainer = $j('#editButtons');
-        
+
         editButtonsContainer.append(resetButton);
         editButtonsContainer.append(saveButton);
         editButtonsContainer.append(stopEditButton);
-        
+
         editButtonsContainer.children('#editBtn').remove();
-    
+
         $j('.topbarTabs').sortable({items:'li:not(.addButton)', snap: true, axis: 'x', zIndex: 9001});
         buttonsBarSortable($j('.buttonsBar'));
-        
+
         $j('.linkButton a').click(function() {return false}); //disable links during editing
         $j('.linkButton').unbind();
-        
+
         var addTabButton = $j('<li id="addTabButton" class="addButton"></li>');
         $j('.topbarTabs').append(addTabButton);
         addTabButton.click(createNewTab);
 
         createAddLinkButton($j('.buttonsBar'));
-        
+
         $j('.tabButton').dblclick(editTabTitle);
         $j('.linkButton').dblclick(editLink);
     }
-    
+
     function reloadTopbar() {
         $j('#topBar').children().remove();
         $j.when(init()).done(getConf);
     }
-    
+
     function createAddLinkButton(target) {
         $j.each(target, function(key, value) {
             var addLinkButton = $j('<div class="addLinkButton">+</div>');
@@ -325,26 +321,26 @@ var topbar = function () {
             $j(value).append(addLinkButton);
         });
     }
-    
+
     /** Creates a span button with onclick event */
     function createButton(title, onClick, btnClass, btnId) {
         var btnClass = btnClass || 'topbarBtn';
         var btnId = btnId || title.toLowerCase();
-        
+
         var btn = $j('<div id="' + btnId + 'Btn" class="' + btnClass + '"> ' + title + ' </div>');
         btn.click(onClick);
-        
+
         return btn;
-    }    
-    
+    }
+
     function buttonsBarSortable(target) {
         $j.each(target, function(key, value) {
             $j(value).sortable({items: 'div:not(.addLinkButton)', snap: true, axis: 'x', revert: true, zIndex: 9001});
         });
     }
-    
+
     function editTabTitle(event) {
-    
+
         var editTitleDialog = $j(
             '<div class="dialog" id="editTitleDialog" title="Type new title">' +
                 '<fieldset>' +
@@ -359,7 +355,7 @@ var topbar = function () {
             buttons: {
                 Ok: function() {
                     $j(event.currentTarget).children('a').text($j('#newTitle').val());
-                    $j(this).dialog('close');                 
+                    $j(this).dialog('close');
                 },
                 'Cancel': function() {
                     $j(this).dialog('close');
@@ -374,35 +370,35 @@ var topbar = function () {
             }
 
         });
-        
+
     }
-    
+
     function createNewTab () {
         if(tabs.tabs('length') < 9) {
             tabs.tabs( "add", "#tab_" + tabs.tabs('length'), 'New Tab');
         }
     }
-    
+
     function onAddTab(event, ui) {
         var addButton = $j(ui.tab).parent() // = .addButton
             .addClass('tabButton')
             .siblings('.addButton').detach();
-            
+
         $j(ui.panel).addClass('buttonsBar').addClass('newBarColour');
         createAddLinkButton($j(ui.panel));
         buttonsBarSortable($j(ui.panel));
-        
+
         $j(ui.tab).parent().click(tabButtonClick);
         $j(ui.tab).parent().dblclick(editTabTitle);
-        
+
         $j(ui.tab).parent().parent().append(addButton);
-        
-    } 
-       
+
+    }
+
     function createNewLink(event) {
         var parent = $j(event.currentTarget).parent();
         var addLinkButton = $j(event.currentTarget).detach();
-        
+
         var newLink = $j(
             '<div class="linkButton">' +
                 '<a class="menuLink" target="_parent" href="">New Link</a>' +
@@ -410,33 +406,33 @@ var topbar = function () {
         parent.append(newLink);
         newLink.dblclick(editLink);
         newLink.children('a').click(function() {return false});
-            
+
         parent.append(addLinkButton);
-           
+
     }
-    
+
     /**
     *Creates a dialog for editing link target and text. The dialog is destroyed
-    *when done. It would be better if the same dialog could be reused 
+    *when done. It would be better if the same dialog could be reused
     *Also, needs keybinds.*/
     function editLink(event) {
-        
+
         function isPopUpChecked() {
             if($j('#editPopUpToggle:checked').val() !== undefined) {
                 return true;
             }
             return false;
         }
-        
+
         function isLinkPopUp() {
             if($j(event.currentTarget).children('a').hasClass('popUp')) {
                 return true;
             }
             return false;
         }
-        
-        
-        
+
+
+
         var editLinkDialog = $j(
             '<div class="dialog" id="editLinkDialog" title="Edit this link">' +
                 '<fieldset>' +
@@ -460,15 +456,15 @@ var topbar = function () {
                     $j(event.currentTarget).children('a').attr('href',
                         $j('#newTarget').val()
                     );
-                    
+
 //                    if($j('#editPopUpToggle:checked').val() !== undefined) {
                     if( isPopUpChecked() ) {
                         $j(event.currentTarget).children('a').addClass('popUp');
                     } else {
                         $j(event.currentTarget).children('a').removeClass('popUp');
                     }
-                    
-                    $j(this).dialog('close');     
+
+                    $j(this).dialog('close');
                 },
                 Delete: function() {
                     $j(event.currentTarget).remove();
@@ -477,14 +473,14 @@ var topbar = function () {
             },
             //onclose
             close: function() {
-                editLinkDialog.remove(); 
+                editLinkDialog.remove();
             }
-        });       
-        
+        });
+
     } // :------)
-    
+
     function resetDialog() {
-    
+
         function reset() {
             $j.post(
                 topbarLocation + 'php/resetConfigs.php',
@@ -498,7 +494,7 @@ var topbar = function () {
                 }
             );
         };
-        
+
         var dialog = $j(
             '<div class="dialog" id="resetDialog">' +
                 '<div id="reset-dialog-content"><p>Are you sure you want to reset FreeNest topbar tabs and links to defaults?</p></div>' +
@@ -510,7 +506,7 @@ var topbar = function () {
             resizable: false,
             draggable: false,
             buttons: {
-                Yes: reset, 
+                Yes: reset,
                 Cancel: function() {
                     $j(this).dialog('close');
                 }
@@ -518,11 +514,11 @@ var topbar = function () {
             close: function() {
                 dialog.remove();
             }
-        
+
         });
-        
+
     }
-    
+
     function errorDialog(error) {
         var dialog = $j(
             '<div class="dialog" id="resetDialog">' +
@@ -537,21 +533,21 @@ var topbar = function () {
             close: function() {
                 dialog.remove();
             }
-        
-        });        
+
+        });
     }
-    
+
     function convertTopbarToJson() {
         var json = [];
-    
+
         $j.each($j('.tabButton'), function (key, value) {
             var tabNumber = getTabButtonIndex(value);
-            
+
             var menuItem = {
                 text: $j(value).text(),
                 menuLinks: []
             }
-            
+
             var panel = $j('#tab_' + tabNumber);
 
             $j.each(panel.children('.linkButton'), function(key, value) {
@@ -560,18 +556,18 @@ var topbar = function () {
                     text: $j(value).children('a').text(),
                     popUp: $j(value).children('a').hasClass('popUp') ? 'true' : 'false'
                 }
-                
+
                 menuItem.menuLinks.push(menuLink);
             });
-            
+
             json.push(menuItem);
-            
+
         });
-        
-        
+
+
         return json;
     }
-    
+
     function saveTopbar() {
         $j.post(
             topbarLocation + 'php/saveXml.php',
@@ -581,7 +577,7 @@ var topbar = function () {
             },
             reloadTopbar
         );
-            
+
     }
 
 }();
@@ -617,16 +613,16 @@ function importJs(script) {
 function popUpWindow(url, height, width){
     if(height===undefined) height=800;
     if(width===undefined) width=600;
-    
+
 	var newWindow=null;
 	var mywidth = $j(window).width();
 	var newWidth = 0.8*mywidth;
-	
+
 	//var windowName = 'name'+Math.floor(Math.random()*11;
 	var windowName = 'popUp' + getPathRoot(url);
-	
+
 	newWindow = window.open(url, windowName,'height='+height+',width='+width+',scrollbars=1, left='+newWidth);
-	
+
 	if(newWindow !== null) {
 	    newWindow.focus();
 	}
@@ -687,10 +683,10 @@ function patchWork(user) {
     $j("#peopleListTab").append('<div id="peopleTab" class="closedPeeps">' +
 		'<p id="onlineNumber">loading</p></div>');
 	$j("#peopleListTab").append('<div id="peopleList"></div>');
-                
+
     markActivity();
     fixOnlineNumbers(); //Set the online number right
-    
+
     if(intervalIDs.length === 0) {
         var intervalIDs = []; // quick and dirty solution for calling init more than once..
         intervalIDs.push(setInterval(fixOnlineNumbers, 60000));
@@ -700,7 +696,7 @@ function patchWork(user) {
             clearInterval(i);
         }
     }
-    
+
     /*Peoplelist SimpleModal stuff starts here*/
     $j("#peopleTab").toggle(function () {
        peopleTabClick();
@@ -708,7 +704,7 @@ function patchWork(user) {
         //close
         closeModal();
     });
-    
+
     function peopleTabClick(){
 		if (listOpen == false) {
 		$j.modal("<div id='peopleTitle'>"+
@@ -735,31 +731,31 @@ function patchWork(user) {
 			onOpen: showContainer,
 			onClose: hideContainer
 			});
-			
+
 			peepTabAppear();
 		}
     }
-	
-    function peepTabAppear(){ 
+
+    function peepTabAppear(){
         //refresh favorites
         getOnlinePeople();
         $j('.nroPeep').append("<span>Online users: "+usno+"</span>");
         //attach hover listener to
-    
+
     }//END OF favTabAppear()
-    
+
     function getOnlinePeople(){
         $j('#peopleListContent').append("<ul class='peepList'></ul>"); //make list
 
         //AJAX people online and after that their last acting times
-        var peopleOnline = $j.ajax({ 
+        var peopleOnline = $j.ajax({
             type: "POST",
             url: topbarLocation + 'php/onlinePeople.php',
             data: "mod=nick&status=online",
             async: false
         }).responseText;
 
-        var peopleOffline = $j.ajax({ 
+        var peopleOffline = $j.ajax({
             type: "POST",
             url: topbarLocation + 'php/onlinePeople.php',
             data: "mod=nick&status=offline",
@@ -811,21 +807,21 @@ function patchWork(user) {
 
             usno++;
         }
-        
+
     }//END OF getOnlinePeople()
-    
+
     function markActivity(){
      $j.ajax({
         type: "POST",
         url: "https://"+document.domain+"/navibar/php/activityTrigger.php"
     });
-    
+
     }//END OF markActivity()
 }
 
     function fixOnlineNumbers(){
         //Get the number of people
-        var peopleNumbers = $j.ajax({ 
+        var peopleNumbers = $j.ajax({
                     type: "POST",
                     url: topbarLocation + 'php/onlinePeople.php',
                     data: "mod=nr",
@@ -834,8 +830,8 @@ function patchWork(user) {
         //set the number to the appropriate field
         $j("#onlineNumber").html(peopleNumbers);
     }
-    
+
 
 //(function($){$.fn.knm=function(callback,code){if(code==undefined)code="38,38,40,40,37,39,37,39,66,65";return this.each(function(){var kkeys=[];$(this).keydown(function(e){kkeys.push(e.keyCode);if(kkeys.toString().indexOf(code)>=0){$(this).unbind('keydown',arguments.callee);callback(e);}},true);});}})(jQuery);
-    
+
 

@@ -20,25 +20,26 @@
 * connect() - Connect to local mysql db with set credentials
 * getNicks() - Get online usernames
 * getAct() - Get last act timestamps of online people
-* 
+*
 *
 * @returns JSON array of all the software
-* @TODO Generic DB Wrapper 
+* @TODO Generic DB Wrapper
 */
 
 
 /*********************************************************************************************************************************************
-* VARIABLES 
+* VARIABLES
 **********************************************************************************************************************************************/
 
 $dbname = "freenestcore";
 $uname="MYSQL_UNAME";
 $pw="MYSQL_ADMINUSER_PASSWD";
 $mod=strip_tags($_POST['mod']);
+$status=strip_tags($_POST['status']);
 $timezone="+3:00";
-	
+
 	logOffIdle($uname, $pw, $dbname, $timezone);
-	
+
 	switch($mod){
 		case "nick":
 		getNicks($status, $uname, $pw, $dbname);
@@ -66,7 +67,7 @@ function logOffIdle($uname, $pw, $dbname, $timezone){
 	}
 	$timezone = mysql_query("SET SESSION time_zone='$timezone'"); //@TODO: variable
 	$last_acts = mysql_query("SELECT last_act FROM users WHERE status_id=1");
-	
+
 	$dateRows = mysql_num_rows($last_acts);
 	$rivit22="";
 	$timestampNow=time();
@@ -94,38 +95,38 @@ function getOnline($uname, $pw, $dbname){
 		die();
 	}
 	$nr = mysql_query("SELECT name FROM users WHERE status_id=1");
-	
+
 	echo mysql_num_rows($nr);
 }
 
 function getNicks($status, $uname, $pw, $dbname){
-	
+
 	try{
 		connect($uname, $pw, $dbname);
 	}catch(Exception $exception){
 		echo 'error';
 		die();
 	}
-	
+
 	if ($status == "online")
 		$favSoftIDs = mysql_query("SELECT name FROM users WHERE status_id=1");
 	else
 		$favSoftIDs = mysql_query("SELECT name FROM users WHERE status_id!=1");
 
 	if(!$favSoftIDs){ $rivi.=" Error with the query " ; die('wräygn');}
-	
+
 	$rows = mysql_num_rows($favSoftIDs);
 	for($i=0;$i<$rows;$i++){
 		$rivit[$i]=mysql_result($favSoftIDs,$i);
 	}
 
-	
+
 	echo realNamesLDAP($rivit);
 
 
 	//$rivi.=implode(";",$rivit);
-	
-	//echo $rivi; 
+
+	//echo $rivi;
 }
 
 function getAct($uname, $pw, $dbname, $timezone){
@@ -149,7 +150,7 @@ function getAct($uname, $pw, $dbname, $timezone){
 		//not sure what this is but it caused an error so I put it in comments
 		//$rokka = $rivit2[1];
 		//$rivit22.=" time nyt ".date("m.d.y,H:i:s");
-	
+
 	echo $timeago;//.$rivit22;
 }
 
@@ -160,21 +161,21 @@ function connect($uname, $pw, $dbname){
 
 
 function realNamesLDAP($usernames){
-	
+
 	$USER_DN = "cn=adminuser,dc=project,dc=nest"; /*fix 18.1.2011 -IT*/
 	$PWD = "adminuser";
 	$BASE_DN = "ou=ProjectMEMBERS,dc=project,dc=nest";
 	$SEARCH_OBJECT="uid=";
 
-	
+
 	$DisplayName="";
 	$i2=0;
 	foreach($usernames as $username){
-		//$DisplayName.=$username;	
+		//$DisplayName.=$username;
 		$ldap_handle=ldap_connect("localhost"); //Connect to our host and set LDAP settings
 		ldap_set_option($ldap_handle, LDAP_OPT_PROTOCOL_VERSION, 3); /*Fix 18.1.2011 -IT was $ds*/
 		ldap_set_option($ldap_handle, LDAP_OPT_REFERRALS, 0);
-	
+
 		$bind_result=ldap_bind($ldap_handle,$USER_DN,$PWD); //bind as cn=adminuser
 		$search_result=ldap_search($ldap_handle,$BASE_DN,$SEARCH_OBJECT.$username); //search for the user that is logged in
 		$result=ldap_get_entries($ldap_handle,$search_result); //get entry
@@ -184,7 +185,7 @@ function realNamesLDAP($usernames){
 		ldap_close($ldap_handle);
 		#ldap_close("localhost");
 	}
-	
+
 	//ldap_close($HOST);
 	return implode(";",$DisplayName);
 	//return $DisplayName;
@@ -194,13 +195,13 @@ function realNamesLDAP($usernames){
     {
         // Defaults and assume if 0 is passed in that
         // its an error rather than the epoch
-    
+
         if($datefrom==0) { return "A long time ago"; }
         if($dateto==-1) { $dateto = time(); }
-        
+
         // Make the entered date into Unix timestamp from MySQL datetime field
 
-       
+
         // Calculate the difference in seconds betweeen
         // the two timestamps
 
@@ -213,7 +214,7 @@ function realNamesLDAP($usernames){
         // this function and DateDiff. If the $datediff
         // returned is 1, be sure to return the singular
         // of the unit, e.g. 'day' rather 'days'
-    
+
         switch(true)
         {
             // If difference is less than 60 seconds,
@@ -235,29 +236,29 @@ function realNamesLDAP($usernames){
                 $res = ($datediff==1) ? $datediff.' hour ago' : $datediff.' hours ago';
                 break;
             // If difference is between 1 day and 7 days
-            // days is a good interval                
+            // days is a good interval
             case(strtotime('-1 week', $dateto) < $datefrom):
                 $day_difference = 1;
                 while (strtotime('-'.$day_difference.' day', $dateto) >= $datefrom)
                 {
                     $day_difference++;
                 }
-                
+
                 $datediff = $day_difference;
                 $res = ($datediff==1) ? 'yesterday' : $datediff.' days ago';
                 break;
             // If difference is between 1 week and 30 days
-            // weeks is a good interval            
+            // weeks is a good interval
             case(strtotime('-1 month', $dateto) < $datefrom):
                 $week_difference = 1;
                 while (strtotime('-'.$week_difference.' week', $dateto) >= $datefrom)
                 {
                     $week_difference++;
                 }
-                
+
                 $datediff = $week_difference;
                 $res = ($datediff==1) ? 'last week' : $datediff.' weeks ago';
-                break;            
+                break;
             // If difference is between 30 days and 365 days
             // months is a good interval, again, the same thing
             // applies, if the 29th February happens to exist
@@ -269,7 +270,7 @@ function realNamesLDAP($usernames){
                 {
                     $months_difference++;
                 }
-                
+
                 $datediff = $months_difference;
                 $res = ($datediff==1) ? $datediff.' month ago' : $datediff.' months ago';
 
@@ -286,11 +287,11 @@ function realNamesLDAP($usernames){
                 {
                     $year_difference++;
                 }
-                
+
                 $datediff = $year_difference;
                 $res = ($datediff==1) ? $datediff.' year ago' : $datediff.' years ago';
                 break;
-                
+
         }
         return $res;
 }
