@@ -234,7 +234,16 @@ var topbar = function () {
 
     //The logo should be a link w/ an image, but..
     function nestLogoClick() {
-        window.parent.location = topbarLocation + '../ProjectMAINPAGE';
+        $j.ajax({
+            type: "POST",
+            url: topbarLocation + '../ProjectDASHBOARD',
+            success: function() {
+                window.parent.location = topbarLocation + '../ProjectDASHBOARD';
+            },
+            error: function() {
+                window.parent.location = topbarLocation + '../ProjectMAINPAGE';
+            }
+        });
     }
 
     function createTabs() {
