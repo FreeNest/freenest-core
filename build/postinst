@@ -152,10 +152,15 @@ cp /usr/share/freenest-core/confs/default /etc/apache2/sites-available/
 cp /usr/share/freenest-core/confs/www2 /etc/apache2/sites-available/
 cp /usr/share/freenest-core/confs/default-ssl /etc/apache2/sites-available/
 
-cp /usr/share/freenest-core/confs/proxy_html.load /etc/apache2/mods-available/
 cp /usr/share/freenest-core/confs/proxy.conf /etc/apache2/mods-available
 cp /usr/share/freenest-core/confs/proxy_html.conf /etc/apache2/mods-available
 cp /usr/share/freenest-core/confs/dav_svn.conf /etc/apache2/mods-available
+if [ (lscpu | grep "x86_64") == "Architecture:          x86_64" ]; then
+    cp /usr/share/freenest-core/confs/proxy_html.load64 /etc/apache2/mods-available/proxy_html.load
+else
+    cp /usr/share/freenest-core/confs/proxy_html.load32 /etc/apache2/mods-available/proxy_html.load
+fi
+
 
 # Replaces proxy.conf file placeholders (webmin uses it, maybe some other too)
 rpl "HostName_PLACEHOLDER" $machine_hostname_rpl /etc/apache2/mods-available/proxy.conf > /dev/null 2>&1
