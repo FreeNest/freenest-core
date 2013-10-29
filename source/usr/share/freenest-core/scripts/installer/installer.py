@@ -136,7 +136,7 @@ def splash_ending():
     """
     ipaddress = ip_addr()
 
-    sys.stdout.write("  You can access your FreeNEST installation by navigating to "
+    sys.stdout.write("  You can access your FreeNest installation by navigating to "
         + ipaddress + "\n")
 
 def save_config(conf):
