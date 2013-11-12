@@ -667,8 +667,8 @@ function patchWork(user) {
             '<div id="freenest-help-close-button"></div>'+
         '</div>'+
         '<div id="freenest-help-content">'+
-            '<p>Help not implemented yet,'+
-            '<br>please use <a href="http://freenest.org/about">freenest.org/about</a> instead.'+
+            '<p>Need for help?'+
+            '<br>Please use <a href="http://freenest.org/wiki/bin/view/FreeNest1dot4/">FreeNest Help</a> instead.'+
             '</p>'+
         '</div>'+
     '</div>');
