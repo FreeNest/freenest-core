@@ -668,7 +668,7 @@ function patchWork(user) {
         '</div>'+
         '<div id="freenest-help-content">'+
             '<p>Need for help?'+
-            '<br>Please use <a href="http://freenest.org/wiki/bin/view/FreeNest1dot4/">FreeNest Help</a> instead.'+
+            '<br>Go to <a href="http://freenest.org/wiki/bin/view/FreeNest1dot4/">FreeNest Online Help</a>'+
             '</p>'+
         '</div>'+
     '</div>');
